@@ -1,15 +1,21 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
-import { Client, Events, GatewayIntentBits } from 'discord.js';
+import { Client, IntentsBitField } from 'discord.js';
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new Client({ intents: [
+  IntentsBitField.Flags.Guilds,
+  IntentsBitField.Flags.GuildMembers,
+  IntentsBitField.Flags.GuildMessages,
+  IntentsBitField.Flags.MessageContent,
+],
+});
 
 client.on('ready', () => {
   console.log('Bot is on');
 })
 
-client.on('message',  (msg) => {
+client.on('messageCreate',  (msg) => {
 	if (msg.content === 'hello') {
 		msg.reply('hey');
 	} 
