@@ -9,10 +9,10 @@ client.on('ready', () => {
   console.log('Bot is on');
 })
 
-client.on('message', msg => {
+client.on('message',  (msg) => {
 	if (msg.content === 'hello') {
-		msg.reply('stfu');
+		msg.reply('hey');
 	} 
 });
 
-client.login(dotenv);
+client.login(process.env.BOT_TOKEN);
