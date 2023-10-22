@@ -11,13 +11,17 @@ const client = new Client({ intents: [
 ],
 });
 
-client.on('ready', () => {
-  console.log('Bot is on');
+client.on('ready', (bot) => {
+  console.log(`${bot.user.tag} is on`);
 })
 
 client.on('messageCreate',  (msg) => {
-	if (msg.content === 'hello') {
-		msg.reply('hey');
+  if (msg.author.bot) {
+    return;
+  }
+
+	if (msg.content === 'yo') {
+		msg.reply('S tier bro');
 	} 
 });
 
