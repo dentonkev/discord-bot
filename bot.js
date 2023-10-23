@@ -1,9 +1,10 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
-import { Client, IntentsBitField } from 'discord.js';
+import { Client, IntentsBitField, Events, GatewayIntentBits} from 'discord.js';
 
 const client = new Client({ intents: [
+  GatewayIntentBits.Guilds,
   IntentsBitField.Flags.Guilds,
   IntentsBitField.Flags.GuildMembers,
   IntentsBitField.Flags.GuildMessages,
