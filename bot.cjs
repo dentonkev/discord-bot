@@ -1,7 +1,8 @@
-import dotenv from 'dotenv'
-dotenv.config()
+const fs = require('node:fs');
+const path = require('node:path');
+require('dotenv').config();
 
-import { Client, IntentsBitField, Events, GatewayIntentBits} from 'discord.js';
+const { Client, Collection, Events, GatewayIntentBits, IntentsBitField } = require('discord.js');
 
 const client = new Client({ intents: [
   GatewayIntentBits.Guilds,
@@ -12,9 +13,11 @@ const client = new Client({ intents: [
 ],
 });
 
-client.on('ready', (bot) => {
-  console.log(`${bot.user.tag} is on`);
-})
+client.commands = new Collection();
+
+client.once(Events.ClientReady, bot => {
+  console.log(`${bot.user.tag} is online`)
+});
 
 client.on('messageCreate',  (msg) => {
   if (msg.author.bot) {
