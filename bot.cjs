@@ -15,6 +15,9 @@ const client = new Client({ intents: [
 
 client.commands = new Collection();
 
+const commandPath = path.join('discord-bot', 'commands');
+const commandFiles = fs.readdirSync(commandPath).filter((file) => file.endsWith('.cjs'));
+
 client.once(Events.ClientReady, bot => {
   console.log(`${bot.user.tag} is online`)
 });
