@@ -1,11 +1,14 @@
-const fs = require('fs');
-const path = require('path');
-require('dotenv').config();
+import { fs } from 'fs';
+import { path } from 'path';
+import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
+import { config } from 'dotenv';
 
-const { Client, Collection, Events, GatewayIntentBits,  } = require('discord.js');
+config();
 
 const client = new Client({ intents: [
   GatewayIntentBits.Guilds,
+  GatewayIntentBits.GuildMessages,
+  GatewayIntentBits.MessageContent,
 ],
 });
 
@@ -19,6 +22,7 @@ const commandFiles = fs.readdirSync(commandPath).filter((file) => file.endsWith(
 for (const file of commandFiles) {
   const filePath = path.join(commandPath, file);
   // console.log(filePath);
+  // TODO: Change line below
   const command = require(filePath);
   console.log(command);
 
@@ -47,8 +51,6 @@ client.on(Events.InteractionCreate, async interaction => {
   }
 });
 
-
-
 client.once(Events.ClientReady, bot => {
   console.log(`${bot.user.tag} is online`)
 });
@@ -61,6 +63,8 @@ client.on('messageCreate',  (msg) => {
 	if (msg.content === 'yo') {
 		msg.reply('S tier bro');
 	} 
+
+  console.log(msg.content);
 });
 
 client.login(process.env.BOT_TOKEN);
