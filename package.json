@@ -1,14 +1,14 @@
 {
   "name": "discord-bot",
   "version": "1.0.0",
-  "description": "discord music bot",
+  "description": "discord bot",
   "type": "module",
   "main": "bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "n": "nodemon bot.js"
   },
-  "author": "Denton Kev, Marcus Ryan",
+  "author": "Denton Kev",
   "license": "ISC",
   "dependencies": {
     "discord.js": "^14.12.1",
