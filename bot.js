@@ -69,12 +69,12 @@ client.on('messageCreate',  (message) => {
 client.on('channelCreate', (channel) => {
   // 2 is voice channel
   if (channel.type === 2) {
-    console.log(`A voice chat named ${channel.name} has been created`);
+    console.log(`A voice channel named ${channel.name} has been created`);
   }
 
   // 0 is text channel
   if (channel.type === 0) {
-    console.log(`A voice chat named ${channel.name} has been created`);
+    console.log(`A text channel named ${channel.name} has been created`);
   }
 });
 
