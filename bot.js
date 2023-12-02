@@ -50,14 +50,13 @@ async function slashCommands() {
     },
     {
       name: 'denton',
-      description: 'your mum',
+      description: 'caitlin',
     },
   ];
 
   try {
     console.log('Started refreshing application (/) commands.');
     await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: commands });
-    client.login(BOT_TOKEN);
   }
   catch (error) {
     console.log(error);
@@ -65,3 +64,4 @@ async function slashCommands() {
 }
 
 slashCommands();
+client.login(BOT_TOKEN);
