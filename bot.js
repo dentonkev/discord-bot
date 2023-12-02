@@ -1,11 +1,9 @@
-import fs  from 'fs';
-import path from 'path';
+// import fs  from 'fs';
+// import path from 'path';
 import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
 import { config } from 'dotenv';
 
 config();
-
-const cwd = '/Users/dentonkev/Documents/Programming/projects/discord-bot';
 
 const client = new Client({ intents: [
   GatewayIntentBits.Guilds,
@@ -14,6 +12,7 @@ const client = new Client({ intents: [
 ],
 });
 
+// const cwd = '/Users/dentonkev/Documents/Programming/projects/discord-bot'
 // client.commands = new Collection();
 
 // const commandPath = path.join(cwd, 'commands');
@@ -63,18 +62,20 @@ client.on('messageCreate',  (message) => {
   }
 
 	if (message.content === 'yo') {
-		message.reply('S tier bro');
+		message.reply('this actually works');
 	} 
-
-  console.log(message.content);
 });
 
 client.on('channelCreate', (channel) => {
+  // 2 is voice channel
   if (channel.type === 2) {
-    const type = 'voice chat';
-    console.log(`A ${type} named ${channel.name} has been created`);
+    console.log(`A voice chat named ${channel.name} has been created`);
   }
 
+  // 0 is text channel
+  if (channel.type === 0) {
+    console.log(`A voice chat named ${channel.name} has been created`);
+  }
 });
 
 client.login(process.env.BOT_TOKEN);
