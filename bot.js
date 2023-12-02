@@ -1,69 +1,33 @@
-// import fs  from 'fs';
-// import path from 'path';
-import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
+import { Client, Collection, Events, GatewayIntentBits, REST, Routes } from 'discord.js';
 import { config } from 'dotenv';
 
 config();
+const BOT_TOKEN = process.env.BOT_TOKEN;
+const CLIENT_ID = process.env.CLIENT_ID;
+const GUILD_ID = process.env.GUILD_ID;
 
-const client = new Client({ intents: [
-  GatewayIntentBits.Guilds,
-  GatewayIntentBits.GuildMessages,
-  GatewayIntentBits.MessageContent,
-],
+const client = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
 });
 
-// const cwd = '/Users/dentonkev/Documents/Programming/projects/discord-bot'
-// client.commands = new Collection();
-
-// const commandPath = path.join(cwd, 'commands');
-// // console.log(commandPath);
-// const commandFiles = fs.readdirSync(commandPath).filter((file) => file.endsWith('.js'));
-// // console.log(commandFiles);
-
-// for (const file of commandFiles) {
-//   const filePath = path.join(commandPath, file);
-//   // console.log(filePath);
-//   // TODO: Change line below
-//   const command = require(filePath);
-//   console.log(command);
-
-//   if ('data' in command && 'execute' in command) {
-//     client.commands.set(command.data.name, command);
-//   } 
-// } 
-
-// client.on(Events.InteractionCreate, async interaction => {
-//   if (!interaction.isChatInputCommand()) return;
-//   console.log(interaction);
-  
-//   const command = interaction.client.commands.get(interaction.commandName);
-
-//   if (!command) {
-//     console.error(`${interaction.commandName} not found`);
-//   }
-
-//   try {
-//     await command.execute(interaction);
-//   } catch (Error) {
-//     console.error(Error);
-//     if (interaction.replied || interaction) {
-
-//     }
-//   }
-// });
+const rest = new REST({ version: '10' }).setToken(BOT_TOKEN);
 
 client.on('ready', () => {
   console.log(`${client.user.tag} is online`);
 });
 
-client.on('messageCreate',  (message) => {
+client.on('messageCreate', (message) => {
   if (message.author.bot) {
     return;
   }
 
-	if (message.content === 'yo') {
-		message.reply('this actually works');
-	} 
+  if (message.content === 'yo') {
+    message.reply('this actually works');
+  }
 });
 
 client.on('channelCreate', (channel) => {
@@ -78,4 +42,26 @@ client.on('channelCreate', (channel) => {
   }
 });
 
-client.login(process.env.BOT_TOKEN);
+async function slashCommands() {
+  const commands = [
+    {
+      name: 'hydro',
+      description: 'It contains a lot of cold water',
+    },
+    {
+      name: 'denton',
+      description: 'your mum',
+    },
+  ];
+
+  try {
+    console.log('Started refreshing application (/) commands.');
+    await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: commands });
+    client.login(BOT_TOKEN);
+  }
+  catch (error) {
+    console.log(error);
+  }
+}
+
+slashCommands();
