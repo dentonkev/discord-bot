@@ -42,6 +42,13 @@ client.on('channelCreate', (channel) => {
   }
 });
 
+client.on('interactionCreate', async interaction => {  
+
+});
+
+slashCommands();
+client.login(BOT_TOKEN);
+
 async function slashCommands() {
   const commands = [
     {
@@ -62,6 +69,3 @@ async function slashCommands() {
     console.log(error);
   }
 }
-
-slashCommands();
-client.login(BOT_TOKEN);
