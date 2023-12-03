@@ -42,15 +42,56 @@ client.on('channelCreate', (channel) => {
   }
 });
 
+client.on('interactionCreate', (interaction) => {
+  if (interaction.isChatInputCommand() && interaction.commandName === 'hydro') {
+
+    const bottle = interaction.options.data[0].value;
+    interaction.reply({ content: `You ordered a ${bottle}` });
+  }
+
+});
+
 async function slashCommands() {
   const commands = [
     {
       name: 'hydro',
-      description: 'It contains a lot of cold water',
+      description: 'Which bottle do you want to choose',
+      options: [
+        {
+          name: 'small-bottle',
+          description: 'small hydroflask bottle',
+          type: 3,
+          choices: [
+            {
+              name: 'Black-bottle',
+              value: 'small-black-bottle',
+            },
+            {
+              name: 'Blue-bottle',
+              value: 'small-blue-bottle',
+            },
+          ]
+        },
+        {
+          name: 'large-bottle',
+          description: 'large hydroflask bottle',
+          type: 3,
+          choices: [
+            {
+              name: 'Black-bottle',
+              value: 'large-black-bottle',
+            },
+            {
+              name: 'Blue-bottle',
+              value: 'large-blue-bottle',
+            },
+          ]
+        }
+      ]
     },
     {
       name: 'denton',
-      description: 'your mum',
+      description: 'caitlin',
     },
   ];
 
