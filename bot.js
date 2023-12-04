@@ -1,5 +1,7 @@
-import { Client, Collection, Events, GatewayIntentBits, REST, Routes } from 'discord.js';
+import { Client, Collection, Events, GatewayIntentBits, REST, Routes, SlashCommandBuilder } from 'discord.js';
 import { config } from 'dotenv';
+import hydroCommands from './commands/hydro.js'
+import coffeeCommands from './commands/coffee.js'
 
 config();
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -44,62 +46,28 @@ client.on('channelCreate', (channel) => {
 
 client.on('interactionCreate', (interaction) => {
   if (interaction.isChatInputCommand() && interaction.commandName === 'hydro') {
-
     const bottle = interaction.options.data[0].value;
     interaction.reply({ content: `You ordered a ${bottle}` });
   }
 
+  if (interaction.isChatInputCommand() && interaction.commandName === 'coffee') {
+    const coffee = interaction.options.data[0].value;
+    interaction.reply({ content: `You ordered a ${coffee}` });
+  }
+
 });
 
-async function slashCommands() {
-  const commands = [
-    {
-      name: 'hydro',
-      description: 'Which bottle do you want to choose',
-      options: [
-        {
-          name: 'small-bottle',
-          description: 'small hydroflask bottle',
-          type: 3,
-          choices: [
-            {
-              name: 'Black-bottle',
-              value: 'small-black-bottle',
-            },
-            {
-              name: 'Blue-bottle',
-              value: 'small-blue-bottle',
-            },
-          ]
-        },
-        {
-          name: 'large-bottle',
-          description: 'large hydroflask bottle',
-          type: 3,
-          choices: [
-            {
-              name: 'Black-bottle',
-              value: 'large-black-bottle',
-            },
-            {
-              name: 'Blue-bottle',
-              value: 'large-blue-bottle',
-            },
-          ]
-        }
-      ]
-    },
-    {
-      name: 'denton',
-      description: 'caitlin',
-    },
-  ];
+async function slashCommands() { 
+  const commands = [hydroCommands, coffeeCommands];
 
   try {
     console.log('Started refreshing application (/) commands.');
     await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: commands });
-  }
+  } 
   catch (error) {
     console.log(error);
   }
 }
+
+slashCommands();
+client.login(BOT_TOKEN);
