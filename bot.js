@@ -1,7 +1,8 @@
 import { Client, Collection, Events, GatewayIntentBits, REST, Routes, SlashCommandBuilder } from 'discord.js';
 import { config } from 'dotenv';
-import hydroCommands from './commands/hydro.js'
-import coffeeCommands from './commands/coffee.js'
+import hydroCommand from './commands/hydro.js'
+import coffeeCommand from './commands/coffee.js'
+import roleCommand from './commands/role.js'
 
 config();
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -58,7 +59,7 @@ client.on('interactionCreate', (interaction) => {
 });
 
 async function slashCommands() { 
-  const commands = [hydroCommands, coffeeCommands];
+  const commands = [hydroCommand, coffeeCommand, roleCommand];
 
   try {
     console.log('Started refreshing application (/) commands.');
