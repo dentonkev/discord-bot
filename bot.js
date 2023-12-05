@@ -5,6 +5,7 @@ import coffeeCommand from './commands/coffee.js'
 import roleCommand from './commands/role.js'
 import userCommand from './commands/user.js'
 import channelCommand from './commands/channel.js'
+import removeCommand from './commands/kick.js'
 
 config();
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -61,7 +62,8 @@ client.on('interactionCreate', (interaction) => {
 });
 
 async function slashCommands() {  
-  const commands = [hydroCommand, coffeeCommand, roleCommand, userCommand, channelCommand];
+  // https://discord.com/developers/docs/interactions/application-commands#application-command-object
+  const commands = [hydroCommand, coffeeCommand, roleCommand, userCommand, channelCommand, removeCommand];
 
   try {
     console.log('Started refreshing application (/) commands.');
