@@ -1,4 +1,4 @@
-import { Client, Collection, Events, GatewayIntentBits, REST, Routes, SlashCommandBuilder } from 'discord.js';
+import { ActionRowBuilder, Client, Collection, Events, GatewayIntentBits, REST, Routes, SelectMenuBuilder, SlashCommandBuilder, StringSelectMenuBuilder } from 'discord.js';
 import { config } from 'dotenv';
 import hydroCommand from './commands/hydro.js'
 import coffeeCommand from './commands/coffee.js'
@@ -49,7 +49,13 @@ client.on('channelCreate', (channel) => {
 });
 
 client.on('interactionCreate', (interaction) => {
-  if (interaction.isChatInputCommand() && interaction.commandName === 'hydro') {
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === 'hydro') {
+    const actionRow = new ActionRowBuilder().setComponents(
+      new StringSelectMenuBuilder() 
+    )
+
     const bottle = interaction.options.data[0].value;
     interaction.reply({ content: `You ordered a ${bottle}` });
   }
@@ -67,7 +73,7 @@ async function slashCommands() {
 
   try {
     console.log('Started refreshing application (/) commands.');
-    await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), { body: commands });
+    await rest.put(Routes.applicationCommands(CLIENT_ID, GUILD_ID), { body: commands });
   } 
   catch (error) {
     console.log(error);
