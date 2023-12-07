@@ -1,11 +1,22 @@
-import { ActionRowBuilder, Client, Collection, Events, GatewayIntentBits, REST, Routes, SelectMenuBuilder, SlashCommandBuilder, StringSelectMenuBuilder } from 'discord.js';
-import { config } from 'dotenv';
-import hydroCommand from './commands/hydro.js'
-import coffeeCommand from './commands/coffee.js'
-import roleCommand from './commands/role.js'
-import userCommand from './commands/user.js'
-import channelCommand from './commands/channel.js'
-import removeCommand from './commands/kick.js'
+import {
+  ActionRowBuilder,
+  Client,
+  Collection,
+  Events,
+  GatewayIntentBits,
+  REST,
+  Routes,
+  StringSelectMenuBuilder,
+} from "discord.js";
+import { config } from "dotenv";
+import hydroCommand from "./commands/hydro.js";
+import coffeeCommand from "./commands/coffee.js";
+import roleCommand from "./commands/role.js";
+import userCommand from "./commands/user.js";
+import channelCommand from "./commands/channel.js";
+import removeCommand from "./commands/kick.js";
+
+require();
 
 config();
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -20,23 +31,23 @@ const client = new Client({
   ],
 });
 
-const rest = new REST({ version: '10' }).setToken(BOT_TOKEN);
+const rest = new REST({ version: "10" }).setToken(BOT_TOKEN);
 
-client.on('ready', () => {
+client.on("ready", () => {
   console.log(`${client.user.tag} is online`);
 });
 
-client.on('messageCreate', (message) => {
+client.on("messageCreate", (message) => {
   if (message.author.bot) {
     return;
   }
 
-  if (message.content === 'yo') {
-    message.reply('this actually works');
+  if (message.content === "yo") {
+    message.reply("this actually works");
   }
 });
 
-client.on('channelCreate', (channel) => {
+client.on("channelCreate", (channel) => {
   // 2 is voice channel
   if (channel.type === 2) {
     console.log(`A voice channel named ${channel.name} has been created`);
@@ -48,34 +59,44 @@ client.on('channelCreate', (channel) => {
   }
 });
 
-client.on('interactionCreate', (interaction) => {
+client.on("interactionCreate", (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
-  if (interaction.commandName === 'hydro') {
+  if (interaction.commandName === "hydro") {
     const actionRow = new ActionRowBuilder().setComponents(
-      new StringSelectMenuBuilder() 
-    )
+      new StringSelectMenuBuilder()
+    );
 
     const bottle = interaction.options.data[0].value;
     interaction.reply({ content: `You ordered a ${bottle}` });
   }
 
-  if (interaction.isChatInputCommand() && interaction.commandName === 'coffee') {
+  if (
+    interaction.isChatInputCommand() &&
+    interaction.commandName === "coffee"
+  ) {
     const coffee = interaction.options.data[0].value;
     interaction.reply({ content: `You ordered a ${coffee}` });
   }
-
 });
 
-async function slashCommands() {  
+async function slashCommands() {
   // https://discord.com/developers/docs/interactions/application-commands#application-command-object
-  const commands = [hydroCommand, coffeeCommand, roleCommand, userCommand, channelCommand, removeCommand];
+  const commands = [
+    hydroCommand,
+    coffeeCommand,
+    roleCommand,
+    userCommand,
+    channelCommand,
+    removeCommand,
+  ];
 
   try {
-    console.log('Started refreshing application (/) commands.');
-    await rest.put(Routes.applicationCommands(CLIENT_ID, GUILD_ID), { body: commands });
-  } 
-  catch (error) {
+    console.log("Started refreshing application (/) commands.");
+    await rest.put(Routes.applicationCommands(CLIENT_ID), {
+      body: commands,
+    });
+  } catch (error) {
     console.log(error);
   }
 }
