@@ -63,7 +63,7 @@ client.on('channelCreate', (channel) => {
   }
 });
 
-client.on('interactionCreate', (interaction) => {
+client.on('interactionCreate', async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === 'hydro') {
@@ -72,12 +72,24 @@ client.on('interactionCreate', (interaction) => {
     );
 
     const bottle = interaction.options.data[0].value;
-    interaction.reply({ content: `You ordered a ${bottle}`, ephemeral: true });
+    await interaction.reply({
+      content: `You ordered a ${bottle}`,
+      ephemeral: true,
+    });
   }
 
   if (interaction.commandName === 'coffee') {
     const coffee = interaction.options.data[0].value;
-    interaction.reply({ content: `You ordered a ${coffee}`, ephemeral: true });
+    await interaction.reply({
+      content: `You ordered a ${coffee}`,
+      ephemeral: true,
+    });
+  }
+
+  if (interaction.commandName === 'ping') {
+    await interaction.reply({ content: 'pong!' });
+    const message = await interaction.fetchReply();
+    console.log(message.content);
   }
 
   // if (interaction.commandName === "ping") {
@@ -87,15 +99,18 @@ client.on('interactionCreate', (interaction) => {
   //   }, 2000);
   // }
 
-  if (interaction.commandName === 'ping') {
-    interaction.deferReply({ ephemeral: true });
-    setTimeout(() => {
-      interaction.editReply({ content: 'pong after 4 seconds!' });
-    }, 4000);
-  }
+  // if (interaction.commandName === 'ping') {
+  //   interaction.deferReply({ ephemeral: true });
+  //   setTimeout(() => {
+  //     interaction.editReply({ content: 'pong after 4 seconds!' });
+  //   }, 4000);
+  // }
 
-  if (interaction.commandName === 'ping') {
-  }
+  // if (interaction.commandName === 'ping') {
+  //   await interaction.reply({ content: 'pong!' });
+  //   await interaction.followUp({ content: 'pong number 2' });
+  //   // await interaction.deleteReply();
+  // }
 });
 
 async function slashCommands() {
