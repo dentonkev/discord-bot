@@ -16,6 +16,7 @@ import userCommand from './commands/user.js';
 import channelCommand from './commands/channel.js';
 import removeCommand from './commands/kick.js';
 import pingCommand from './commands/ping.js';
+import echoCommand from './commands/echo.js';
 
 config();
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -86,16 +87,16 @@ client.on('interactionCreate', async (interaction) => {
     });
   }
 
-  if (interaction.commandName === 'ping') {
-    await interaction.reply({ content: 'pong!' });
-    const message = await interaction.fetchReply();
-    console.log(message.content);
-  }
+  // if (interaction.commandName === 'ping') {
+  //   await interaction.reply({ content: 'pong!' });
+  //   const message = await interaction.fetchReply();
+  //   console.log(message.content);
+  // }
 
-  // if (interaction.commandName === "ping") {
-  //   interaction.reply({ content: "pong!" });
+  // if (interaction.commandName === 'ping') {
+  //   interaction.reply({ content: 'pong!' });
   //   setTimeout(() => {
-  //     interaction.editReply({ content: "pong edited!" });
+  //     interaction.editReply({ content: 'pong edited!' });
   //   }, 2000);
   // }
 
@@ -106,10 +107,14 @@ client.on('interactionCreate', async (interaction) => {
   //   }, 4000);
   // }
 
-  // if (interaction.commandName === 'ping') {
-  //   await interaction.reply({ content: 'pong!' });
-  //   await interaction.followUp({ content: 'pong number 2' });
-  //   // await interaction.deleteReply();
+  if (interaction.commandName === 'ping') {
+    await interaction.reply({ content: 'pong!' });
+    await interaction.followUp({ content: 'pong number 2' });
+    await interaction.deleteReply();
+  }
+
+  // if (interaction.commandName === 'echo') {
+  //   await interaction.reply(interaction.)
   // }
 });
 
@@ -122,6 +127,7 @@ async function slashCommands() {
     channelCommand,
     removeCommand,
     pingCommand,
+    echoCommand,
   ];
 
   try {
