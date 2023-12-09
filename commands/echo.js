@@ -10,6 +10,13 @@ const echoCommands = new SlashCommandBuilder()
       .setRequired(true)
       .setMaxLength(30)
       .setMinLength(2)
+  )
+  .addNumberOption((option) =>
+    option
+      .setName('number')
+      .setDescription('Number that gets echoed back')
+      .setRequired(true)
+      .setMaxValue(100)
+      .setMinValue(1)
   );
-
 export default echoCommands.toJSON();
