@@ -113,9 +113,11 @@ client.on('interactionCreate', async (interaction) => {
     await interaction.deleteReply();
   }
 
-  // if (interaction.commandName === 'echo') {
-  //   await interaction.reply(interaction.)
-  // }
+  if (interaction.commandName === 'echo') {
+    const message = interaction.options.getString('message');
+    const number = interaction.options.getNumber('number');
+    await interaction.reply(`${message}, ${number}`);
+  }
 });
 
 async function slashCommands() {
