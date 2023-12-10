@@ -72,7 +72,7 @@ client.on('interactionCreate', async (interaction) => {
       new StringSelectMenuBuilder()
     );
 
-    const bottle = interaction.options.data[0].value;
+    const bottle = interaction.options.getString('bottle');
     await interaction.reply({
       content: `You ordered a ${bottle}`,
       ephemeral: true,
@@ -80,7 +80,7 @@ client.on('interactionCreate', async (interaction) => {
   }
 
   if (interaction.commandName === 'coffee') {
-    const coffee = interaction.options.data[0].value;
+    const coffee = interaction.options.getString('mug');
     await interaction.reply({
       content: `You ordered a ${coffee}`,
       ephemeral: true,
@@ -116,7 +116,34 @@ client.on('interactionCreate', async (interaction) => {
   if (interaction.commandName === 'echo') {
     const message = interaction.options.getString('message');
     const number = interaction.options.getNumber('number');
-    await interaction.reply(`${message}, ${number}`);
+    if (number === undefined) {
+      await interaction.reply(`${message}`);
+    } else {
+      await interaction.reply(`${message}, ${number}`);
+    }
+  }
+
+  if (interaction.commandName === 'remove') {
+    if (
+      interaction.options.getSubcommandGroup() === 'denton-group' ||
+      interaction.options.getSubcommandGroup() === 'caitlin-group'
+    ) {
+      if (interaction.options.getSubcommand() === 'kick') {
+        const user = interaction.options.getUser('user');
+        interaction.guild.members.kick(user);
+        interaction.reply({
+          content: `Successfully kicked ${user.displayName}`,
+        });
+      }
+
+      if (interaction.options.getSubcommand() === 'ban') {
+        const user = interaction.options.getUser('user');
+        interaction.guild.members.ban(user);
+        interaction.reply({
+          content: `Successfully banned ${user.displayName}`,
+        });
+      }
+    }
   }
 });
 

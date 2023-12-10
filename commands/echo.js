@@ -7,6 +7,7 @@ const echoCommands = new SlashCommandBuilder()
     option
       .setName('message')
       .setDescription('Message that gets echoed back')
+      .setRequired(true)
       .setMaxLength(30)
       .setMinLength(2)
   )
