@@ -1,5 +1,7 @@
 import {
   ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
   Client,
   Collection,
   Events,
@@ -68,10 +70,6 @@ client.on('interactionCreate', async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
 
   if (interaction.commandName === 'hydro') {
-    const actionRow = new ActionRowBuilder().setComponents(
-      new StringSelectMenuBuilder()
-    );
-
     const bottle = interaction.options.getString('bottle');
     await interaction.reply({
       content: `You ordered a ${bottle}`,
@@ -124,25 +122,44 @@ client.on('interactionCreate', async (interaction) => {
   }
 
   if (interaction.commandName === 'remove') {
-    if (
-      interaction.options.getSubcommandGroup() === 'denton-group' ||
-      interaction.options.getSubcommandGroup() === 'caitlin-group'
-    ) {
-      if (interaction.options.getSubcommand() === 'kick') {
-        const user = interaction.options.getUser('user');
-        interaction.guild.members.kick(user);
-        interaction.reply({
-          content: `Successfully kicked ${user.displayName}`,
-        });
-      }
+    const banConfirm = new ButtonBuilder()
+      .setCustomId('banConfirm')
+      .setLabel('Ban')
+      .setStyle(ButtonStyle.Danger)
+      .setEmoji({ name: '🔨' });
 
-      if (interaction.options.getSubcommand() === 'ban') {
-        const user = interaction.options.getUser('user');
-        interaction.guild.members.ban(user);
-        interaction.reply({
-          content: `Successfully banned ${user.displayName}`,
-        });
-      }
+    const kickConfirm = new ButtonBuilder()
+      .setCustomId('kickConfirm')
+      .setLabel('Kick')
+      .setStyle(ButtonStyle.Danger)
+      .setEmoji({ name: '🔨' });
+
+    const cancel = new ButtonBuilder()
+      .setCustomId('cancel')
+      .setLabel('Cancel')
+      .setStyle(ButtonStyle.Secondary)
+      .setEmoji({ name: '✋' });
+
+    if (interaction.options.getSubcommand() === 'kick') {
+      const user = interaction.options.getUser('user');
+      const row = new ActionRowBuilder().addComponents(kickConfirm, cancel);
+
+      interaction.reply({
+        content: `Confirm ban on ${user.displayName}`,
+        components: [row],
+      });
+      interaction.guild.members.kick(user);
+    }
+
+    if (interaction.options.getSubcommand() === 'ban') {
+      const user = interaction.options.getUser('user');
+      const row = new ActionRowBuilder().addComponents(banConfirm, cancel);
+
+      interaction.reply({
+        content: `Confirm ban on ${user.displayName}`,
+        components: [row],
+      });
+      interaction.guild.members.ban(user);
     }
   }
 });
@@ -161,7 +178,7 @@ async function slashCommands() {
 
   try {
     console.log('Started refreshing application (/) commands.');
-    await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
+    await rest.put(Routes.applicationCommands(CLIENT_ID), {
       body: commands,
     });
   } catch (error) {
