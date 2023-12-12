@@ -9,10 +9,11 @@ import {
   REST,
   Routes,
   StringSelectMenuBuilder,
+  StringSelectMenuOptionBuilder,
 } from 'discord.js';
 import { config } from 'dotenv';
 import hydroCommand from './commands/hydro.js';
-import coffeeCommand from './commands/coffee.js';
+import drinkCommand from './commands/drinks.js';
 import roleCommand from './commands/role.js';
 import userCommand from './commands/user.js';
 import channelCommand from './commands/channel.js';
@@ -77,12 +78,32 @@ client.on('interactionCreate', async (interaction) => {
     });
   }
 
-  if (interaction.commandName === 'coffee') {
-    const coffee = interaction.options.getString('mug');
-    await interaction.reply({
-      content: `You ordered a ${coffee}`,
-      ephemeral: true,
-    });
+  if (interaction.commandName === 'drink') {
+    const menu = new StringSelectMenuBuilder()
+      .setCustomId('drink-choice')
+      .setPlaceholder('Choose your favourite drinks')
+      .setMinValues(1)
+      .setMaxValues(3)
+      .addOptions(
+        new StringSelectMenuOptionBuilder()
+          .setLabel('Coffee')
+          .setValue('coffee')
+          .setEmoji({ name: '☕' }),
+
+        new StringSelectMenuOptionBuilder()
+          .setLabel('Coke')
+          .setValue('coke')
+          .setEmoji({ name: '🥤' }),
+
+        new StringSelectMenuOptionBuilder()
+          .setLabel('Bubble tea')
+          .setValue('bubble-tea')
+          .setEmoji({ name: '🧋' })
+      );
+
+    const row = new ActionRowBuilder().addComponents(menu);
+
+    interaction.reply({ components: [row] });
   }
 
   // if (interaction.commandName === 'ping') {
@@ -167,7 +188,7 @@ client.on('interactionCreate', async (interaction) => {
 async function slashCommands() {
   const commands = [
     hydroCommand,
-    coffeeCommand,
+    drinkCommand,
     roleCommand,
     userCommand,
     channelCommand,
@@ -178,7 +199,7 @@ async function slashCommands() {
 
   try {
     console.log('Started refreshing application (/) commands.');
-    await rest.put(Routes.applicationCommands(CLIENT_ID), {
+    await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
       body: commands,
     });
   } catch (error) {
