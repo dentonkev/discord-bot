@@ -103,7 +103,13 @@ client.on('interactionCreate', async (interaction) => {
 
     const row = new ActionRowBuilder().addComponents(menu);
 
-    interaction.reply({ components: [row] });
+    await interaction.reply({ components: [row] });
+  }
+
+  if (interaction.commandName === 'ping') {
+    await interaction.reply({ content: 'pong!' });
+    await interaction.followUp({ content: 'pong number 2' });
+    await interaction.deleteReply();
   }
 
   // if (interaction.commandName === 'ping') {
@@ -126,12 +132,6 @@ client.on('interactionCreate', async (interaction) => {
   //   }, 4000);
   // }
 
-  if (interaction.commandName === 'ping') {
-    await interaction.reply({ content: 'pong!' });
-    await interaction.followUp({ content: 'pong number 2' });
-    await interaction.deleteReply();
-  }
-
   if (interaction.commandName === 'echo') {
     const message = interaction.options.getString('message');
     const number = interaction.options.getNumber('number');
@@ -144,13 +144,13 @@ client.on('interactionCreate', async (interaction) => {
 
   if (interaction.commandName === 'remove') {
     const banConfirm = new ButtonBuilder()
-      .setCustomId('banConfirm')
+      .setCustomId('ban')
       .setLabel('Ban')
       .setStyle(ButtonStyle.Danger)
       .setEmoji({ name: '🔨' });
 
     const kickConfirm = new ButtonBuilder()
-      .setCustomId('kickConfirm')
+      .setCustomId('kick')
       .setLabel('Kick')
       .setStyle(ButtonStyle.Danger)
       .setEmoji({ name: '🔨' });
@@ -165,22 +165,70 @@ client.on('interactionCreate', async (interaction) => {
       const user = interaction.options.getUser('user');
       const row = new ActionRowBuilder().addComponents(kickConfirm, cancel);
 
-      interaction.reply({
-        content: `Confirm ban on ${user.displayName}`,
+      const response = await interaction.reply({
+        content: `Confirm kick on ${user.displayName}`,
         components: [row],
       });
-      interaction.guild.members.kick(user);
+
+      try {
+        const confirmation = await response.awaitMessageComponent({
+          filter: (i) => i.user.id === interaction.user.id,
+          time: 60000,
+        });
+
+        if (confirmation.customId === 'kick') {
+          await interaction.guild.members.kick(user);
+          await confirmation.update({
+            content: `${user} has been kicked`,
+            components: [],
+          });
+        } else if (confirmation.customId === 'cancel') {
+          await confirmation.update({
+            content: `Kick command cancelled`,
+            components: [],
+          });
+        }
+      } catch (error) {
+        await interaction.editReply({
+          content: 'No confirmation receieved for 1 min',
+          components: [],
+        });
+      }
     }
 
     if (interaction.options.getSubcommand() === 'ban') {
       const user = interaction.options.getUser('user');
       const row = new ActionRowBuilder().addComponents(banConfirm, cancel);
 
-      interaction.reply({
+      const response = await interaction.reply({
         content: `Confirm ban on ${user.displayName}`,
         components: [row],
       });
-      interaction.guild.members.ban(user);
+
+      try {
+        const confirmation = await response.awaitMessageComponent({
+          filter: (i) => i.user.id === interaction.user.id,
+          time: 60000,
+        });
+
+        if (confirmation.customId === 'ban') {
+          interaction.guild.members.ban(user);
+          await confirmation.update({
+            content: `${user} has been banned`,
+            components: [],
+          });
+        } else if (confirmation.customId === 'cancel') {
+          await confirmation.update({
+            content: `Ban command cancelled`,
+            components: [],
+          });
+        }
+      } catch (error) {
+        await interaction.editReply({
+          content: 'No confirmation receieved for 1 min',
+          components: [],
+        });
+      }
     }
   }
 });
