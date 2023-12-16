@@ -4,6 +4,7 @@ import {
   ButtonStyle,
   Client,
   Collection,
+  ComponentType,
   Events,
   GatewayIntentBits,
   REST,
@@ -68,166 +69,185 @@ client.on('channelCreate', (channel) => {
 });
 
 client.on('interactionCreate', async (interaction) => {
-  if (!interaction.isChatInputCommand()) return;
-
-  if (interaction.commandName === 'hydro') {
-    const bottle = interaction.options.getString('bottle');
-    await interaction.reply({
-      content: `You ordered a ${bottle}`,
-      ephemeral: true,
-    });
-  }
-
-  if (interaction.commandName === 'drink') {
-    const menu = new StringSelectMenuBuilder()
-      .setCustomId('drink-choice')
-      .setPlaceholder('Choose your favourite drinks')
-      .setMinValues(1)
-      .setMaxValues(3)
-      .addOptions(
-        new StringSelectMenuOptionBuilder()
-          .setLabel('Coffee')
-          .setValue('coffee')
-          .setEmoji({ name: '☕' }),
-
-        new StringSelectMenuOptionBuilder()
-          .setLabel('Coke')
-          .setValue('coke')
-          .setEmoji({ name: '🥤' }),
-
-        new StringSelectMenuOptionBuilder()
-          .setLabel('Bubble tea')
-          .setValue('bubble-tea')
-          .setEmoji({ name: '🧋' })
-      );
-
-    const row = new ActionRowBuilder().addComponents(menu);
-
-    await interaction.reply({ components: [row] });
-  }
-
-  if (interaction.commandName === 'ping') {
-    await interaction.reply({ content: 'pong!' });
-    await interaction.followUp({ content: 'pong number 2' });
-    await interaction.deleteReply();
-  }
-
-  // if (interaction.commandName === 'ping') {
-  //   await interaction.reply({ content: 'pong!' });
-  //   const message = await interaction.fetchReply();
-  //   console.log(message.content);
-  // }
-
-  // if (interaction.commandName === 'ping') {
-  //   interaction.reply({ content: 'pong!' });
-  //   setTimeout(() => {
-  //     interaction.editReply({ content: 'pong edited!' });
-  //   }, 2000);
-  // }
-
-  // if (interaction.commandName === 'ping') {
-  //   interaction.deferReply({ ephemeral: true });
-  //   setTimeout(() => {
-  //     interaction.editReply({ content: 'pong after 4 seconds!' });
-  //   }, 4000);
-  // }
-
-  if (interaction.commandName === 'echo') {
-    const message = interaction.options.getString('message');
-    const number = interaction.options.getNumber('number');
-    if (number === undefined) {
-      await interaction.reply(`${message}`);
-    } else {
-      await interaction.reply(`${message}, ${number}`);
+  if (interaction.isChatInputCommand()) {
+    // ! hydro
+    if (interaction.commandName === 'hydro') {
+      const bottle = interaction.options.getString('bottle');
+      await interaction.reply({
+        content: `You ordered a ${bottle}`,
+        ephemeral: true,
+      });
     }
-  }
+    // ! drink
+    if (interaction.commandName === 'drink') {
+      const menu = new StringSelectMenuBuilder()
+        .setCustomId('drink-choice')
+        .setPlaceholder('Choose your favourite drinks')
+        .setMaxValues(1)
+        .addOptions(
+          new StringSelectMenuOptionBuilder()
+            .setLabel('Coffee')
+            .setValue('coffee')
+            .setEmoji({ name: '☕' }),
 
-  if (interaction.commandName === 'remove') {
-    const banConfirm = new ButtonBuilder()
-      .setCustomId('ban')
-      .setLabel('Ban')
-      .setStyle(ButtonStyle.Danger)
-      .setEmoji({ name: '🔨' });
+          new StringSelectMenuOptionBuilder()
+            .setLabel('Coke')
+            .setValue('coke')
+            .setEmoji({ name: '🥤' }),
 
-    const kickConfirm = new ButtonBuilder()
-      .setCustomId('kick')
-      .setLabel('Kick')
-      .setStyle(ButtonStyle.Danger)
-      .setEmoji({ name: '🔨' });
+          new StringSelectMenuOptionBuilder()
+            .setLabel('Bubble tea')
+            .setValue('bubble-tea')
+            .setEmoji({ name: '🧋' }),
 
-    const cancel = new ButtonBuilder()
-      .setCustomId('cancel')
-      .setLabel('Cancel')
-      .setStyle(ButtonStyle.Secondary)
-      .setEmoji({ name: '✋' });
+          new StringSelectMenuOptionBuilder()
+            .setLabel('Sugar Cane')
+            .setValue('sugar-cane')
+            .setEmoji({ name: '🍹' })
+        );
 
-    if (interaction.options.getSubcommand() === 'kick') {
-      const user = interaction.options.getUser('user');
-      const row = new ActionRowBuilder().addComponents(kickConfirm, cancel);
+      const row = new ActionRowBuilder().addComponents(menu);
+      const response = await interaction.reply({ components: [row] });
 
-      const response = await interaction.reply({
-        content: `Confirm kick on ${user.displayName}`,
-        components: [row],
+      // returns an InteractionCollector
+      const collector = response.createMessageComponentCollector({
+        componentType: ComponentType.StringSelect,
+        filter: (i) => i.user.id === interaction.user.id,
+        time: 60000,
       });
 
-      try {
-        const confirmation = await response.awaitMessageComponent({
-          filter: (i) => i.user.id === interaction.user.id,
-          time: 60000,
+      collector.on('collect', async (i) => {
+        const selection = i.values;
+        await i.reply(`${i.user} chose ${selection}`);
+      });
+    }
+
+    // ! remove
+    if (interaction.commandName === 'remove') {
+      const banConfirm = new ButtonBuilder()
+        .setCustomId('ban')
+        .setLabel('Ban')
+        .setStyle(ButtonStyle.Danger)
+        .setEmoji({ name: '🔨' });
+
+      const kickConfirm = new ButtonBuilder()
+        .setCustomId('kick')
+        .setLabel('Kick')
+        .setStyle(ButtonStyle.Danger)
+        .setEmoji({ name: '🔨' });
+
+      const cancel = new ButtonBuilder()
+        .setCustomId('cancel')
+        .setLabel('Cancel')
+        .setStyle(ButtonStyle.Secondary)
+        .setEmoji({ name: '✋' });
+
+      if (interaction.options.getSubcommand() === 'kick') {
+        const user = interaction.options.getUser('user');
+        const row = new ActionRowBuilder().addComponents(kickConfirm, cancel);
+
+        const response = await interaction.reply({
+          content: `Confirm kick on ${user.displayName}`,
+          components: [row],
         });
 
-        if (confirmation.customId === 'kick') {
-          await interaction.guild.members.kick(user);
-          await confirmation.update({
-            content: `${user} has been kicked`,
-            components: [],
+        try {
+          const confirmation = await response.awaitMessageComponent({
+            filter: (i) => i.user.id === interaction.user.id,
+            time: 60000,
           });
-        } else if (confirmation.customId === 'cancel') {
-          await confirmation.update({
-            content: `Kick command cancelled`,
+
+          if (confirmation.customId === 'kick') {
+            await interaction.guild.members.kick(user);
+            await confirmation.update({
+              content: `${user} has been kicked`,
+              components: [],
+            });
+          } else if (confirmation.customId === 'cancel') {
+            await confirmation.update({
+              content: `Kick command cancelled`,
+              components: [],
+            });
+          }
+        } catch (error) {
+          await interaction.editReply({
+            content: 'No confirmation receieved for 1 min',
             components: [],
           });
         }
-      } catch (error) {
-        await interaction.editReply({
-          content: 'No confirmation receieved for 1 min',
-          components: [],
+      }
+
+      if (interaction.options.getSubcommand() === 'ban') {
+        const user = interaction.options.getUser('user');
+        const row = new ActionRowBuilder().addComponents(banConfirm, cancel);
+
+        const response = await interaction.reply({
+          content: `Confirm ban on ${user.displayName}`,
+          components: [row],
         });
+
+        try {
+          const confirmation = await response.awaitMessageComponent({
+            filter: (i) => i.user.id === interaction.user.id,
+            time: 60000,
+          });
+
+          if (confirmation.customId === 'ban') {
+            interaction.guild.members.ban(user);
+            await confirmation.update({
+              content: `${user} has been banned`,
+              components: [],
+            });
+          } else if (confirmation.customId === 'cancel') {
+            await confirmation.update({
+              content: `Ban command cancelled`,
+              components: [],
+            });
+          }
+        } catch (error) {
+          await interaction.editReply({
+            content: 'No confirmation receieved for 1 min',
+            components: [],
+          });
+        }
       }
     }
 
-    if (interaction.options.getSubcommand() === 'ban') {
-      const user = interaction.options.getUser('user');
-      const row = new ActionRowBuilder().addComponents(banConfirm, cancel);
+    // ! ping
+    if (interaction.commandName === 'ping') {
+      await interaction.reply({ content: 'pong!' });
+      await interaction.followUp({ content: 'pong number 2' });
+      await interaction.deleteReply();
+    }
 
-      const response = await interaction.reply({
-        content: `Confirm ban on ${user.displayName}`,
-        components: [row],
-      });
+    // if (interaction.commandName === 'ping') {
+    //   await interaction.reply({ content: 'pong!' });
+    //   const message = await interaction.fetchReply();
+    //   console.log(message.content);
+    // }
 
-      try {
-        const confirmation = await response.awaitMessageComponent({
-          filter: (i) => i.user.id === interaction.user.id,
-          time: 60000,
-        });
+    // if (interaction.commandName === 'ping') {
+    //   interaction.reply({ content: 'pong!' });
+    //   setTimeout(() => {
+    //     interaction.editReply({ content: 'pong edited!' });
+    //   }, 2000);
+    // }
 
-        if (confirmation.customId === 'ban') {
-          interaction.guild.members.ban(user);
-          await confirmation.update({
-            content: `${user} has been banned`,
-            components: [],
-          });
-        } else if (confirmation.customId === 'cancel') {
-          await confirmation.update({
-            content: `Ban command cancelled`,
-            components: [],
-          });
-        }
-      } catch (error) {
-        await interaction.editReply({
-          content: 'No confirmation receieved for 1 min',
-          components: [],
-        });
+    // if (interaction.commandName === 'ping') {
+    //   interaction.deferReply({ ephemeral: true });
+    //   setTimeout(() => {
+    //     interaction.editReply({ content: 'pong after 4 seconds!' });
+    //   }, 4000);
+    // }
+
+    // ! echo
+    if (interaction.commandName === 'echo') {
+      const message = interaction.options.getString('message');
+      const number = interaction.options.getNumber('number');
+      if (number === undefined) {
+        await interaction.reply(`${message}`);
+      } else {
+        await interaction.reply(`${message}, ${number}`);
       }
     }
   }
