@@ -3,9 +3,7 @@ import {
   ButtonBuilder,
   ButtonStyle,
   Client,
-  Collection,
   ComponentType,
-  Events,
   GatewayIntentBits,
   REST,
   Routes,
@@ -34,9 +32,6 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
 });
-
-client.commands = new Collection();
-const rest = new REST({ version: '10' }).setToken(BOT_TOKEN);
 
 client.on('ready', () => {
   console.log(`${client.user.tag} is online`);
@@ -165,7 +160,7 @@ client.on('interactionCreate', async (interaction) => {
             });
           } else if (confirmation.customId === 'cancel') {
             await confirmation.update({
-              content: `Kick command cancelled`,
+              content: 'Kick command cancelled',
               components: [],
             });
           }
@@ -200,7 +195,7 @@ client.on('interactionCreate', async (interaction) => {
             });
           } else if (confirmation.customId === 'cancel') {
             await confirmation.update({
-              content: `Ban command cancelled`,
+              content: 'Ban command cancelled',
               components: [],
             });
           }
@@ -252,6 +247,8 @@ client.on('interactionCreate', async (interaction) => {
     }
   }
 });
+
+const rest = new REST({ version: '10' }).setToken(BOT_TOKEN);
 
 async function slashCommands() {
   const commands = [
