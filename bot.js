@@ -42,12 +42,8 @@ client.on('messageCreate', (message) => {
     return;
   }
 
-  if (message.content === 'yo') {
+  if (message.content === 'test') {
     message.reply('this actually works');
-  }
-
-  if (message.content === 'hi bub') {
-    message.reply('how you do that');
   }
 });
 
