@@ -1,26 +1,36 @@
 import { SlashCommandBuilder } from 'discord.js';
 
-const hydroCommands = new SlashCommandBuilder()
-	.setName('hydro')
-	.setDescription(' bottle do you want to choose')
-	.addStringOption((option) =>
-		option
-			.setName('bottle')
-			.setDescription('hydroflask bottle')
-			.setRequired(true)
-			.addChoices(
-				{
-					name: '500ml Bottle',
-					value: '500ml bottle',
-				},
-				{
-					name: '1L Bottle',
-					value: '1L bottle',
-				},
-			),
-	);
+const hydroCommands = {
+  data: new SlashCommandBuilder()
+    .setName('hydro')
+    .setDescription(' bottle do you want to choose')
+    .addStringOption((option) =>
+      option
+        .setName('bottle')
+        .setDescription('hydroflask bottle')
+        .setRequired(true)
+        .addChoices(
+          {
+            name: '500ml Bottle',
+            value: '500ml bottle',
+          },
+          {
+            name: '1L Bottle',
+            value: '1L bottle',
+          }
+        )
+    ),
 
-export default hydroCommands.toJSON();
+  async execute(interaction) {
+    const bottle = interaction.options.getString('bottle');
+    await interaction.reply({
+      content: `You ordered a ${bottle}`,
+      ephemeral: true,
+    });
+  },
+};
+
+export default hydroCommands;
 
 // const commands = [
 //   {
