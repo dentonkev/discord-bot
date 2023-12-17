@@ -23,7 +23,7 @@ const echoCommands = {
   async execute(interaction) {
     const message = interaction.options.getString('message');
     const number = interaction.options.getNumber('number');
-    if (number === undefined) {
+    if (number === null) {
       await interaction.reply(`${message}`);
     } else {
       await interaction.reply(`${message}, ${number}`);
