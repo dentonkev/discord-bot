@@ -74,3 +74,12 @@ export default hydroCommands;
 //     description: 'caitlin',
 //   },
 // ];
+
+// import hydroCommand from './commands/hydro.js';
+// import drinkCommand from './commands/drinks.js';
+// import roleCommand from './commands/role.js';
+// import userCommand from './commands/user.js';
+// import channelCommand from './commands/channel.js';
+// import removeCommand from './commands/remove.js';
+// import pingCommand from './commands/ping.js';
+// import echoCommand from './commands/echo.js';
