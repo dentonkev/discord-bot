@@ -5,8 +5,9 @@ import {
   Routes,
   Collection,
 } from 'discord.js';
+import { Player } from 'discord-player';
 import { config } from 'dotenv';
-import fs, { readdirSync } from 'node:fs';
+import { readdirSync } from 'node:fs';
 import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'url';
 
@@ -15,11 +16,13 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 const GUILD_ID = process.env.GUILD_ID;
 
+// Client and SlashCommands Section
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildVoiceStates,
   ],
 });
 
@@ -54,11 +57,23 @@ async function slashCommands() {
 }
 slashCommands();
 
+// Player Section
+const player = new Player(client, {
+  useLegacyFFmpeg: false,
+  skipFFmpeg: false,
+  ytdlOptions: {
+    quality: 'highestaudio',
+    highWaterMark: 1 << 25,
+  },
+});
+await player.extractors.loadDefault((ext) => ext != 'YouTubeExtractor');
+
+// Client Events
 client.on('ready', () => {
   console.log(`${client.user.tag} is online`);
 });
 
-client.on('interactionCreate', async interaction => {
+client.on('interactionCreate', async (interaction) => {
   if (interaction.isChatInputCommand()) {
     const command = interaction.client.commands.get(interaction.commandName);
 
@@ -71,7 +86,10 @@ client.on('interactionCreate', async interaction => {
       await command.default.execute(interaction);
     } catch (error) {
       console.log(error);
-      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+      await interaction.reply({
+        content: 'There was an error while executing this command!',
+        ephemeral: true,
+      });
     }
   }
 });
