@@ -5,7 +5,7 @@ import {
   Routes,
   Collection,
 } from 'discord.js';
-import { Player } from 'discord-player';
+import { Player, QueryType } from 'discord-player';
 import { config } from 'dotenv';
 import { readdirSync } from 'node:fs';
 import path, { dirname } from 'node:path';
@@ -30,17 +30,22 @@ const commands = [];
 client.commands = new Collection();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = readdirSync(commandsPath).filter((file) =>
-  file.endsWith('.js')
-);
+const foldersPath = path.join(__dirname, 'commands');
+const commandFolder = readdirSync(foldersPath);
 
-for (const file of commandFiles) {
-  const filePath = path.join(commandsPath, file);
-  const command = await import(filePath);
+for (const folder of commandFolder) {
+  const commandsPath = path.join(foldersPath, folder);
+  const commandFiles = readdirSync(commandsPath).filter((file) =>
+    file.endsWith('.js')
+  );
 
-  client.commands.set(command.default.data.name, command);
-  commands.push(command.default.data.toJSON());
+  for (const file of commandFiles) {
+    const filePath = path.join(commandsPath, file);
+    const command = await import(filePath);
+
+    client.commands.set(command.default.data.name, command);
+    commands.push(command.default.data.toJSON());
+  }
 }
 
 const rest = new REST().setToken(BOT_TOKEN);
@@ -66,7 +71,7 @@ const player = new Player(client, {
     highWaterMark: 1 << 25,
   },
 });
-await player.extractors.loadDefault((ext) => ext != 'YouTubeExtractor');
+await player.extractors.loadDefault();
 
 // Client Events
 client.on('ready', () => {
