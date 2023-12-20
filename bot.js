@@ -7,7 +7,7 @@ import {
 } from 'discord.js';
 import { Player, QueryType } from 'discord-player';
 import { config } from 'dotenv';
-import { readdirSync } from 'node:fs';
+import fs, { readdirSync } from 'node:fs';
 import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'url';
 
@@ -31,13 +31,13 @@ client.commands = new Collection();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const foldersPath = path.join(__dirname, 'commands');
-const commandFolder = readdirSync(foldersPath);
+const commandFolder = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolder) {
   const commandsPath = path.join(foldersPath, folder);
-  const commandFiles = readdirSync(commandsPath).filter((file) =>
-    file.endsWith('.js')
-  );
+  const commandFiles = fs
+    .readdirSync(commandsPath)
+    .filter((file) => file.endsWith('.js'));
 
   for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
