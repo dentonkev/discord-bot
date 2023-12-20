@@ -56,11 +56,11 @@ const playCommand = {
         },
       });
 
-      interaction.editReply({
+      await interaction.editReply({
         content: `Enqueueing **${res.track.title}** - ${res.track.author} (${res.track.duration})`,
       });
     } catch (error) {
-      interaction.editReply({
+      await interaction.editReply({
         content: 'An error has occured during execution',
         ephemeral: true,
       });
