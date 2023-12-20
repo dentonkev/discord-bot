@@ -26,38 +26,47 @@ const playCommand = {
 
     const song = interaction.options.getString('song');
 
-    const songSearch = await player.search(song, {
-      requestedBy: interaction.user,
-      searchEngine: QueryType.AUTO,
-    });
-
-    if (!songSearch || !songSearch.hasTracks() || songSearch.isEmpty()) {
-      return await interaction.editReply({
-        content: `${song} could not be found`,
+    try {
+      const songSearch = await player.search(song, {
+        requestedBy: interaction.user,
+        searchEngine: QueryType.AUTO,
       });
-    }
 
-    const res = await player.play(channel, songSearch, {
-      nodeOptions: {
-        metadata: {
-          channel: interaction.channel,
-          client: interaction.guild.members.me,
-          requestedBy: interaction.user,
+      if (!songSearch || !songSearch.hasTracks() || songSearch.isEmpty()) {
+        return await interaction.editReply({
+          content: `${song} could not be found`,
+        });
+      }
+
+      const res = await player.play(channel, songSearch, {
+        nodeOptions: {
+          metadata: {
+            channel: interaction.channel,
+            client: interaction.guild.members.me,
+            requestedBy: interaction.user,
+          },
+          bufferingTimeout: 15000,
+          leaveOnStop: true,
+          leaveOnStopCooldown: 5000,
+          leaveOnEnd: true,
+          leaveOnEndCooldown: 15000,
+          leaveOnEmpty: true,
+          leaveOnEmptyCooldown: 300000,
+          skipOnNoStream: true,
         },
-        bufferingTimeout: 15000,
-        leaveOnStop: true,
-        leaveOnStopCooldown: 5000,
-        leaveOnEnd: true,
-        leaveOnEndCooldown: 15000,
-        leaveOnEmpty: true,
-        leaveOnEmptyCooldown: 300000,
-        skipOnNoStream: true,
-      },
-    });
+      });
 
-    interaction.editReply({
-      content: `Now playing ${res.track.title} by ${res.track.author} (${res.track.duration})`,
-    });
+      interaction.editReply({
+        content: `Enqueueing **${res.track.title}** - ${res.track.author} (${res.track.duration})`,
+      });
+    } catch (error) {
+      interaction.editReply({
+        content: 'An error has occured during execution',
+        ephemeral: true,
+      });
+
+      console.log(error);
+    }
   },
 };
 
