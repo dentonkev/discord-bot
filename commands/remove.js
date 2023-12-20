@@ -12,7 +12,7 @@ const removeCommand = {
     .addSubcommand((cmd) =>
       cmd
         .setName('kick')
-        .setDescription('Kick a user group denton-group')
+        .setDescription('Kick a user')
         .addUserOption((user) =>
           user
             .setName('user')
@@ -24,7 +24,7 @@ const removeCommand = {
     .addSubcommand((cmd) =>
       cmd
         .setName('ban')
-        .setDescription('Ban a user group denton-group')
+        .setDescription('Ban a user')
         .addUserOption((user) =>
           user
             .setName('user')
