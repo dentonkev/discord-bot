@@ -62,7 +62,6 @@ const playCommand = {
     } catch (error) {
       await interaction.editReply({
         content: 'An error has occured during execution',
-        ephemeral: true,
       });
 
       console.log(error);
