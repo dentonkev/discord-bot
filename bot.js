@@ -16,7 +16,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 const GUILD_ID = process.env.GUILD_ID;
 
-// Client and SlashCommands Section
+// Client initialization
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -26,6 +26,7 @@ const client = new Client({
   ],
 });
 
+// Load in slash commands from commands directory
 const commands = [];
 client.commands = new Collection();
 
@@ -62,7 +63,7 @@ async function slashCommands() {
 }
 slashCommands();
 
-// Player Section
+// Player initialization
 const player = new Player(client, {
   useLegacyFFmpeg: false,
   skipFFmpeg: false,
@@ -73,7 +74,7 @@ const player = new Player(client, {
 });
 await player.extractors.loadDefault();
 
-// Client Events
+// Client Event Handling
 client.on('ready', () => {
   console.log(`${client.user.tag} is online`);
 });
@@ -122,3 +123,5 @@ client.on('channelCreate', (channel) => {
 });
 
 client.login(BOT_TOKEN);
+
+// Player Event Handling
