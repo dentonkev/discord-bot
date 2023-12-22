@@ -17,15 +17,15 @@ const resumeCommand = {
       });
     }
 
-    if (!queue.node.isPaused()) {
-      return await interaction.replay({
-        content: 'The song is already paused',
-      });
-    }
-
     if (queue.node.isPlaying()) {
       return await interaction.replay({
         content: 'Song is already playing',
+      });
+    }
+
+    if (!queue.node.isPaused()) {
+      return await interaction.replay({
+        content: 'The song is not currently paused',
       });
     }
 
