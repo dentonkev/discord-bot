@@ -1,15 +1,15 @@
 import { SlashCommandBuilder } from 'discord.js';
 
 const pingCommand = {
-  data: new SlashCommandBuilder()
-    .setName('ping')
-    .setDescription('Responds with pong!'),
+	data: new SlashCommandBuilder()
+		.setName('ping')
+		.setDescription('Responds with pong!'),
 
-  async execute(interaction) {
-    await interaction.reply({ content: 'pong!' });
-    await interaction.followUp({ content: 'pong number 2' });
-    await interaction.deleteReply();
-  },
+	async execute(interaction) {
+		await interaction.reply({ content: 'pong!' });
+		await interaction.followUp({ content: 'pong number 2' });
+		await interaction.deleteReply();
+	},
 };
 
 export default pingCommand;

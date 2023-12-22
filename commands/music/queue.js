@@ -1,5 +1,5 @@
 import { useQueue } from 'discord-player';
-import { BaseInteraction, SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder } from 'discord.js';
 
 const queueCommand = {
   data: new SlashCommandBuilder()
