@@ -44,8 +44,10 @@ for (const folder of commandFolder) {
     const filePath = path.join(commandsPath, file);
     const command = await import(filePath);
 
-    client.commands.set(command.default.data.name, command);
-    commands.push(command.default.data.toJSON());
+    if (command) {
+      client.commands.set(command.default.data.name, command);
+      commands.push(command.default.data.toJSON());
+    }
   }
 }
 
