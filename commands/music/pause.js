@@ -18,13 +18,13 @@ const pauseCommand = {
     }
 
     if (queue.node.isPaused()) {
-      return await interaction.replay({
+      return await interaction.reply({
         content: 'The song is already paused',
       });
     }
 
     if (!queue.node.isPlaying()) {
-      return await interaction.replay({
+      return await interaction.reply({
         content: 'No song is currently playing',
       });
     }
