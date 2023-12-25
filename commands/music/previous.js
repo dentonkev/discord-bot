@@ -19,34 +19,18 @@ const previousCommand = {
 
     try {
       const history = useHistory(interaction.guildId);
-      const prev = history.previousTrack;
 
-      if (!prev) {
+      if (!history) {
         return await interaction.reply({
           content: 'There is no previous track',
         });
       }
 
-      player.play(channel, prev, {
-        nodeOptions: {
-          metadata: {
-            channel: interaction.channel,
-            client: interaction.guild.members.me,
-            requestedBy: interaction.user,
-          },
-          bufferingTimeout: 15000,
-          leaveOnStop: true,
-          leaveOnStopCooldown: 5000,
-          leaveOnEnd: true,
-          leaveOnEndCooldown: 15000,
-          leaveOnEmpty: true,
-          leaveOnEmptyCooldown: 300000,
-          skipOnNoStream: true,
-        },
-      });
+      const prev = history.previousTrack;
+      history.back();
 
       await interaction.reply({
-        content: `${prev.title} has been succesfully enqueued`,
+        content: `Now playing **${prev.title}** - ${prev.author} (${prev.duration})`,
       });
     } catch (error) {
       await interaction.reply({
