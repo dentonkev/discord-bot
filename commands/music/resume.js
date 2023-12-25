@@ -17,6 +17,15 @@ const resumeCommand = {
       });
     }
 
+    const clientChannel = interaction.guild.members.me.voice.channel;
+
+    if (!clientChannel) {
+      return await interaction.reply({
+        content: 'I must be in your voice channel to use this command',
+        ephemeral: true,
+      });
+    }
+
     if (queue.node.isPlaying()) {
       return await interaction.reply({
         content: 'Song is already playing',

@@ -17,6 +17,15 @@ const skipCommand = {
       });
     }
 
+    const clientChannel = interaction.guild.members.me.voice.channel;
+
+    if (!clientChannel) {
+      return await interaction.reply({
+        content: 'I must be in your voice channel to use this command',
+        ephemeral: true,
+      });
+    }
+
     if (!queue.isPlaying()) {
       return await interaction.reply({
         content: 'Nothing is currently being played',
@@ -24,7 +33,7 @@ const skipCommand = {
       });
     }
 
-    if (queue.isEmpty()) {
+    if (queue.getSize() === 0) {
       return await interaction.reply({
         content: 'Nothing in the queue',
         ephemeral: true,
