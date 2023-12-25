@@ -26,7 +26,7 @@ const currentsongCommand = {
     try {
       const currTrack = queue.currentTrack;
       await interaction.reply({
-        content: `**${currTrack.title}** - ${currTrack.author} (${currTrack.duration} is currently playing)`,
+        content: `**${currTrack.title}** - ${currTrack.author} (${currTrack.duration}) is currently playing`,
       });
     } catch (error) {
       await interaction.reply({
