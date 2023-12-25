@@ -17,6 +17,15 @@ const leaveCommand = {
       });
     }
 
+    const clientChannel = interaction.guild.members.me.voice.channel;
+
+    if (!clientChannel) {
+      return await interaction.reply({
+        content: 'I must be in your voice channel to use this command',
+        ephemeral: true,
+      });
+    }
+
     try {
       queue.delete();
       await interaction.reply({ content: 'Leaving the voice call' });

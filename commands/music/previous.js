@@ -17,6 +17,15 @@ const previousCommand = {
       });
     }
 
+    const clientChannel = interaction.guild.members.me.voice.channel;
+
+    if (!clientChannel) {
+      return await interaction.reply({
+        content: 'I must be in your voice channel to use this command',
+        ephemeral: true,
+      });
+    }
+
     try {
       const history = useHistory(interaction.guildId);
 
@@ -27,6 +36,13 @@ const previousCommand = {
       }
 
       const prev = history.previousTrack;
+
+      if (!prev) {
+        return await interaction.reply({
+          content: 'There is no previous track',
+        });
+      }
+
       history.previous();
 
       await interaction.reply({
