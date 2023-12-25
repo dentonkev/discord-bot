@@ -27,7 +27,7 @@ const previousCommand = {
       }
 
       const prev = history.previousTrack;
-      history.back();
+      history.previous();
 
       await interaction.reply({
         content: `Now playing **${prev.title}** - ${prev.author} (${prev.duration})`,
