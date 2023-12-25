@@ -46,7 +46,7 @@ const previousCommand = {
       });
 
       await interaction.reply({
-        content: 'Previous song has been succesfully enqueued',
+        content: `${prev.title} has been succesfully enqueued`,
       });
     } catch (error) {
       await interaction.reply({
