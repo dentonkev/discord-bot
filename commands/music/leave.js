@@ -4,7 +4,7 @@ import { SlashCommandBuilder } from 'discord.js';
 const leaveCommand = {
   data: new SlashCommandBuilder()
     .setName('leave')
-    .setDescription('Bot will leave the vc it is currently in'),
+    .setDescription('Bot will leave the voice call it is currently in'),
 
   async execute(interaction) {
     const queue = useQueue(interaction.guildId);
@@ -19,7 +19,7 @@ const leaveCommand = {
 
     try {
       queue.delete();
-      await interaction.reply({ content: 'Leaving the vc' });
+      await interaction.reply({ content: 'Leaving the voice call' });
     } catch (error) {
       await interaction.reply({
         content: 'An error has occured during execution',
