@@ -14,11 +14,13 @@ const lyricsCommand = {
     ),
 
   async execute(interaction) {
+    await interaction.deferReply();
+
     const queue = useQueue(interaction.guildId);
     const channel = interaction.member.voice.channel;
 
     if (!channel) {
-      return await interaction.reply({
+      return await interaction.editReply({
         content: 'You must be in a voice channel to use this command',
         ephemeral: true,
       });
@@ -27,14 +29,14 @@ const lyricsCommand = {
     const clientChannel = interaction.guild.members.me.voice.channel;
 
     if (!clientChannel) {
-      return await interaction.reply({
+      return await interaction.editReply({
         content: 'I must be in your voice channel to use this command',
         ephemeral: true,
       });
     }
 
     if (!queue.node.isPlaying()) {
-      return await interaction.reply({
+      return await interaction.editReply({
         content: 'No song is currently playing',
       });
     }
@@ -51,18 +53,18 @@ const lyricsCommand = {
       const lyrics = await lyricsClient.search(song).catch(() => null);
 
       if (lyrics === null) {
-        return await interaction.reply({
+        return await interaction.editReply({
           content: `No lyrics found for **${song}**`,
         });
       }
 
       const trimmedLyrics = lyrics.lyrics.substring(0, 1997);
 
-      await interaction.reply({
+      await interaction.editReply({
         content: trimmedLyrics,
       });
     } catch (error) {
-      await interaction.reply({
+      await interaction.editReply({
         content: 'An error has occured during execution',
       });
       console.log(error);
