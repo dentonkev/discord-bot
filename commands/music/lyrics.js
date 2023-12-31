@@ -50,7 +50,7 @@ const lyricsCommand = {
       }
 
       const lyricsClient = lyricsExtractor();
-      const lyrics = await lyricsClient.search(song).catch(() => null);
+      const lyrics = await lyricsClient.search(song).catch((error) => null);
 
       if (lyrics === null) {
         return await interaction.editReply({
@@ -58,7 +58,7 @@ const lyricsCommand = {
         });
       }
 
-      const trimmedLyrics = lyrics.lyrics.substring(0, 1997);
+      const trimmedLyrics = lyrics.lyrics.substring(0, 2000);
 
       await interaction.editReply({
         content: trimmedLyrics,
