@@ -41,9 +41,12 @@ const skipCommand = {
     }
 
     try {
+      const queueTracks = queue.tracks.toArray();
+      const nextTrack = queueTracks[0];
+
       queue.node.skip();
       await interaction.reply({
-        content: 'Successfully skipped to the next song in the queue',
+        content: `Successfully skipped to  **${nextTrack.title}** - ${nextTrack.author} (${nextTrack.duration})`,
       });
     } catch (error) {
       await interaction.reply({
