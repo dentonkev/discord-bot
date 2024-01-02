@@ -25,15 +25,6 @@ const queueCommand = {
       });
     }
 
-    const clientChannel = interaction.guild.members.me.voice.channel;
-
-    if (!clientChannel) {
-      return await interaction.editReply({
-        content: 'I must be in your voice channel to use this command',
-        ephemeral: true,
-      });
-    }
-
     const song = interaction.options.getString('song');
 
     try {
