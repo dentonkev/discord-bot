@@ -21,6 +21,16 @@ const queueCommand = {
     if (!channel) {
       return await interaction.editReply({
         content: 'You must be in a voice channel to use this command',
+        ephemeral: true,
+      });
+    }
+
+    const clientChannel = interaction.guild.members.me.voice.channel;
+
+    if (!clientChannel) {
+      return await interaction.editReply({
+        content: 'I must be in your voice channel to use this command',
+        ephemeral: true,
       });
     }
 
