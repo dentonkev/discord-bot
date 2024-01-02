@@ -29,21 +29,19 @@ const playCommand = {
 
     if (!queue) {
       queue = player.nodes.create(vc.guild, {
-        nodeOptions: {
-          metadata: {
-            channel: interaction.channel,
-            client: interaction.guild.members.me,
-            requestedBy: interaction.user,
-          },
-          bufferingTimeout: 15000,
-          leaveOnStop: true,
-          leaveOnStopCooldown: 5000,
-          leaveOnEnd: true,
-          leaveOnEndCooldown: 15000,
-          leaveOnEmpty: true,
-          leaveOnEmptyCooldown: 300000,
-          skipOnNoStream: true,
+        metadata: {
+          channel: interaction.channel,
+          client: interaction.guild.members.me,
+          requestedBy: interaction.user,
         },
+        bufferingTimeout: 15000,
+        leaveOnStop: true,
+        leaveOnStopCooldown: 5000,
+        leaveOnEnd: true,
+        leaveOnEndCooldown: 15000,
+        leaveOnEmpty: true,
+        leaveOnEmptyCooldown: 300000,
+        skipOnNoStream: true,
       });
     }
 
@@ -65,9 +63,9 @@ const playCommand = {
         });
       }
 
-      queue.node.play(songSearch.tracks[0], { queue: false });
-
       const track = songSearch.tracks[0];
+
+      queue.node.play(track, { queue: false });
 
       await interaction.editReply({
         content: `Playing **${track.title}** - ${track.author} (${track.duration})`,
