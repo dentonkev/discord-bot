@@ -46,7 +46,7 @@ const skipCommand = {
 
       queue.node.skip();
       await interaction.reply({
-        content: `Successfully skipped to  **${nextTrack.title}** - ${nextTrack.author} (${nextTrack.duration})`,
+        content: `Successfully skipping to **${nextTrack.title}** - ${nextTrack.author} (${nextTrack.duration})`,
       });
     } catch (error) {
       await interaction.reply({
