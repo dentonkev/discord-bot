@@ -35,7 +35,7 @@ const lyricsCommand = {
       });
     }
 
-    if (!queue.node.isPlaying()) {
+    if (!queue.isPlaying()) {
       return await interaction.editReply({
         content: 'No song is currently playing',
       });
