@@ -71,5 +71,5 @@ Example: /lyrics a sky full of stars
 `/currentsong` command will send a message with the song currently playing.
 
 ```c
-/previous
+/currentsong
 ```
