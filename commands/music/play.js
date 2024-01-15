@@ -1,4 +1,4 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { useMainPlayer, useQueue, QueryType } from 'discord-player';
 
 const playCommand = {
@@ -67,9 +67,30 @@ const playCommand = {
 
       queue.node.play(track, { queue: false });
 
-      await interaction.editReply({
-        content: `Playing **${track.title}** - ${track.author} (${track.duration})`,
-      });
+      const embed = new EmbedBuilder()
+        .setTitle(`${track.title}`)
+        .setDescription(
+          `Playing ${track.title} - ${track.author} (${track.duration})`
+        )
+
+        .setURL(track.url)
+        .setAuthor({ name: `${track.author}` });
+
+      if (track.url.includes('spotify')) {
+        embed
+          .setColor(0x1db954)
+          .setThumbnail(
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/25px-Spotify_icon.svg.png'
+          );
+      } else if (track.url.includes('youtube')) {
+        embed
+          .setColor(0xcd201f)
+          .setThumbnail(
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/YouTube_social_white_square_%282017%29.svg/33px-YouTube_social_white_square_%282017%29.svg.png'
+          );
+      }
+
+      await interaction.editReply({ embeds: [embed] });
     } catch (error) {
       await interaction.editReply({
         content: 'An error has occured during execution',
