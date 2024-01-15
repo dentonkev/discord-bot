@@ -4,7 +4,7 @@ import { SlashCommandBuilder } from 'discord.js';
 const previousCommand = {
   data: new SlashCommandBuilder()
     .setName('previous')
-    .setDescription('Enqueue the previous song'),
+    .setDescription('Immediately play the previous song'),
 
   async execute(interaction) {
     const player = useMainPlayer();
