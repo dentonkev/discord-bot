@@ -35,6 +35,8 @@ const foldersPath = path.join(__dirname, 'commands');
 const commandFolder = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolder) {
+  if (folder === 'test') continue;
+
   const commandsPath = path.join(foldersPath, folder);
   const commandFiles = fs
     .readdirSync(commandsPath)
