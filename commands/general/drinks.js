@@ -19,22 +19,22 @@ const drinkCommand = {
 			.addOptions(
 				new StringSelectMenuOptionBuilder()
 					.setLabel('Coffee')
-					.setValue('coffee')
+					.setValue('Coffee ☕')
 					.setEmoji({ name: '☕' }),
 
 				new StringSelectMenuOptionBuilder()
 					.setLabel('Coke')
-					.setValue('coke')
+					.setValue('Coke 🥤')
 					.setEmoji({ name: '🥤' }),
 
 				new StringSelectMenuOptionBuilder()
 					.setLabel('Bubble tea')
-					.setValue('bubble-tea')
+					.setValue('Bubble tea 🧋')
 					.setEmoji({ name: '🧋' }),
 
 				new StringSelectMenuOptionBuilder()
 					.setLabel('Sugar Cane')
-					.setValue('sugar-cane')
+					.setValue('Sugar Cane 🍹')
 					.setEmoji({ name: '🍹' }),
 			);
 

@@ -11,24 +11,27 @@ const echoCommands = {
 				.setRequired(true)
 				.setMaxLength(30)
 				.setMinLength(2),
-		)
-		.addNumberOption((option) =>
-			option
-				.setName('number')
-				.setDescription('Number that gets echoed back')
-				.setMaxValue(100)
-				.setMinValue(1),
 		),
+		// .addNumberOption((option) =>
+		// 	option
+		// 		.setName('number')
+		// 		.setDescription('Number that gets echoed back')
+		// 		.setMaxValue(100)
+		// 		.setMinValue(1),
+		// )
 
 	async execute(interaction) {
 		const message = interaction.options.getString('message');
-		const number = interaction.options.getNumber('number');
-		if (number === null) {
-			await interaction.reply(`${message}`);
-		}
-		else {
-			await interaction.reply(`${message}, ${number}`);
-		}
+		// const number = interaction.options.getNumber('number');
+
+		// if (number === null) {
+		// 	await interaction.reply(`${message}`);
+		// }
+		// else {
+		// 	await interaction.reply(`${message}, ${number}`);
+		// }
+
+		await interaction.reply({ content: message});
 	},
 };
 
