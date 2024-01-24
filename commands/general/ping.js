@@ -7,7 +7,7 @@ const pingCommand = {
 
 	async execute(interaction) {
 		await interaction.reply({ content: 'pong!' });
-		await interaction.followUp({ content: 'pong number 2!' });
+		await interaction.followUp({ content: 'pong again!' });
 		// await interaction.deleteReply();
 	},
 };
