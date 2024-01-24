@@ -5,9 +5,9 @@ import {
 	ButtonStyle,
 } from 'discord.js';
 
-const removeCommand = {
+const rmCommand = {
 	data: new SlashCommandBuilder()
-		.setName('remove')
+		.setName('rm')
 		.setDescription('Remove a user')
 		.addSubcommand((cmd) =>
 			cmd
@@ -128,4 +128,4 @@ const removeCommand = {
 	},
 };
 
-export default removeCommand;
+export default rmCommand;
