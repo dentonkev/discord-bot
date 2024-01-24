@@ -1,5 +1,5 @@
-import { QueryType, useMainPlayer } from 'discord-player';
-import { SlashCommandBuilder } from 'discord.js';
+import { QueryType, useMainPlayer, useQueue } from 'discord-player';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 
 const queueCommand = {
   data: new SlashCommandBuilder()
@@ -57,9 +57,38 @@ const queueCommand = {
         },
       });
 
-      await interaction.editReply({
-        content: `Enqueueing **${res.track.title}** - ${res.track.author} (${res.track.duration})`,
-      });
+      const track = res.track;
+      const size = useQueue(interaction.guildId).getSize();
+
+      const embed = new EmbedBuilder()
+        .setTitle(`${track.title}`)
+        .setDescription(
+          `Enqueueing ${track.title} - ${track.author} (${track.duration}) at **position #${size}**`
+        )
+
+        .setURL(track.url)
+        .setAuthor({ name: `${track.author}` });
+
+      if (track.url.includes('spotify')) {
+        embed
+          .setColor(0x1db954)
+          .setThumbnail(
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Spotify_icon.svg/25px-Spotify_icon.svg.png'
+          );
+      } else if (track.url.includes('youtube')) {
+        embed
+          .setColor(0xcd201f)
+          .setThumbnail(
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/YouTube_social_white_square_%282017%29.svg/33px-YouTube_social_white_square_%282017%29.svg.png'
+          );
+      }
+
+      if (size === 0) {
+        embed.setDescription(`Playing ${track.title} - ${track.author} (${track.duration})`);
+      }
+
+      await interaction.editReply({ embeds: [embed] });
+
     } catch (error) {
       await interaction.editReply({
         content: 'An error has occured during execution',
