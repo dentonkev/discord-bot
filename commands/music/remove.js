@@ -48,14 +48,14 @@ const removeCommand = {
 
       const embed = new EmbedBuilder()
         .setTitle(`${track.title}`)
-        .setDescription(`Removing ${track.title} - ${track.author} (${track.duration}) from the queue`)
+        .setDescription(`Removing ${track.title} - ${track.author} (${track.duration}) from the queue.`)
         .setAuthor({ name: `${track.author}` })
         .setURL(`${track.url}`);
 
       await interaction.reply({ embeds: [embed] });
 
     } catch (error) {
-      await interaction.editReply({
+      await interaction.reply({
         content: 'An error has occured during execution',
       });
 
