@@ -1,5 +1,5 @@
 import { useQueue } from "discord-player";
-import { SlashCommandBuilder } from "discord.js";
+import { SlashCommandBuilder, EmbedBuilder } from "discord.js";
 
 const removeCommand = {
   data: new SlashCommandBuilder()
@@ -42,12 +42,25 @@ const removeCommand = {
     }
 
     try {
+      const track = queue.tracks.data[positionIndex];
       queue.removeTrack(positionIndex);
+      
+
+      const embed = new EmbedBuilder()
+        .setTitle(`${track.title}`)
+        .setDescription(`Removing ${track.title} - ${track.author} (${track.duration}) from the queue`)
+        .setAuthor({ name: `${track.author}` })
+        .setURL(`${track.url}`);
+
+      await interaction.reply({ embeds: [embed] });
 
     } catch (error) {
+      await interaction.editReply({
+        content: 'An error has occured during execution',
+      });
 
+      console.log(error);
     }
-
   }
 }
 
