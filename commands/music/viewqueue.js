@@ -39,7 +39,8 @@ const viewQueueCommand = {
       
       const embed = new EmbedBuilder()
         .setTitle('Current Queue')
-        .setDescription(`${queueList}`);
+        .setDescription(`${queueList}`)
+        .setColor(0x9bd5ef);
 
       await interaction.reply({ embeds: [embed] });
 
