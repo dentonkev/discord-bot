@@ -58,12 +58,13 @@ const queueCommand = {
       });
 
       const track = res.track;
-      const size = useQueue(interaction.guildId).getSize();
+      const queue = useQueue(interaction.guildId);
+      const size = queue.tracks.data.length;
 
       const embed = new EmbedBuilder()
         .setTitle(`${track.title}`)
         .setDescription(
-          `Enqueueing ${track.title} - ${track.author} (${track.duration}) at **position #${size}**`
+          `Enqueueing ${track.title} - ${track.author} (${track.duration})`
         )
 
         .setURL(track.url)
