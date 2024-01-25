@@ -1,6 +1,6 @@
 import { lyricsExtractor } from '@discord-player/extractor';
 import { useQueue } from 'discord-player';
-import { SlashCommandBuilder, flatten } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 
 const lyricsCommand = {
   data: new SlashCommandBuilder()
@@ -60,9 +60,12 @@ const lyricsCommand = {
 
       const trimmedLyrics = lyrics.lyrics.substring(0, 2000);
 
-      await interaction.editReply({
-        content: trimmedLyrics,
-      });
+      const embed = new EmbedBuilder()
+        .setTitle('Lyrics')
+        .setDescription(`${trimmedLyrics}`);
+
+      await interaction.editReply({ embed: [embed]});
+      
     } catch (error) {
       await interaction.editReply({
         content: 'An error has occured during execution',

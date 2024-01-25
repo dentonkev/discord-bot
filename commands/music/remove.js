@@ -50,7 +50,8 @@ const removeCommand = {
         .setTitle(`${track.title}`)
         .setDescription(`Removing ${track.title} - ${track.author} (${track.duration}) from the queue.`)
         .setAuthor({ name: `${track.author}` })
-        .setURL(`${track.url}`);
+        .setURL(`${track.url}`)
+        .setColor(0xdc2823);
 
       await interaction.reply({ embeds: [embed] });
 

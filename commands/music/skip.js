@@ -1,5 +1,5 @@
 import { useQueue } from 'discord-player';
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 
 const skipCommand = {
   data: new SlashCommandBuilder()
@@ -45,9 +45,14 @@ const skipCommand = {
       const nextTrack = queueTracks[0];
 
       queue.node.skip();
-      await interaction.reply({
-        content: `Successfully skipping to **${nextTrack.title}** - ${nextTrack.author} (${nextTrack.duration})`,
-      });
+
+      const embed = new EmbedBuilder()
+        .setTitle('Skipping')
+        .setDescription(`Successfully skipping to **${nextTrack.title}** - ${nextTrack.author} (${nextTrack.duration})`)
+        .setColor(0xeef9a5);
+
+      await interaction.reply({ embeds: [embed] });
+
     } catch (error) {
       await interaction.reply({
         content: 'An error has occured during execution',
