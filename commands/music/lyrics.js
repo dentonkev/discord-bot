@@ -28,7 +28,7 @@ const lyricsCommand = {
 
     const clientChannel = interaction.guild.members.me.voice.channel;
 
-    if (!clientChannel) {
+    if (clientChannel !== channel) {
       return await interaction.editReply({
         content: 'I must be in your voice channel to use this command',
         ephemeral: true,

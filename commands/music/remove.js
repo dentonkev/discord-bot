@@ -24,7 +24,7 @@ const removeCommand = {
 
     const clientChannel = interaction.guild.members.me.voice.channel;
 
-    if (!clientChannel) {
+    if (clientChannel !== channel) {
       return await interaction.reply({
         content: 'I must be in your voice channel to use this command',
         ephemeral: true,
@@ -43,7 +43,6 @@ const removeCommand = {
 
     try {
       queue.removeTrack(positionIndex);
-      console.log(queue.tracks);
 
     } catch (error) {
 
