@@ -17,32 +17,32 @@ const lyricsCommand = {
     await interaction.deferReply();
 
     const queue = useQueue(interaction.guildId);
-    const channel = interaction.member.voice.channel;
+    // const channel = interaction.member.voice.channel;
 
-    if (!channel) {
-      return await interaction.editReply({
-        content: 'You must be in a voice channel to use this command',
-        ephemeral: true,
-      });
-    }
+    // if (!channel) {
+    //   return await interaction.editReply({
+    //     content: 'You must be in a voice channel to use this command',
+    //     ephemeral: true,
+    //   });
+    // }
 
-    const clientChannel = interaction.guild.members.me.voice.channel;
+    // const clientChannel = interaction.guild.members.me.voice.channel;
 
-    if (clientChannel !== channel) {
-      return await interaction.editReply({
-        content: 'I must be in your voice channel to use this command',
-        ephemeral: true,
-      });
-    }
-
-    if (!queue.isPlaying()) {
-      return await interaction.editReply({
-        content: 'No song is currently playing',
-      });
-    }
+    // if (clientChannel !== channel) {
+    //   return await interaction.editReply({
+    //     content: 'I must be in your voice channel to use this command',
+    //     ephemeral: true,
+    //   });
+    // }
 
     try {
       let song = interaction.options.getString('song');
+
+      if (song === null && !queue.isPlaying()) {
+        return await interaction.editReply({
+          content: 'No song is currently playing',
+        });
+      }
 
       if (song === null) {
         song = queue.currentTrack.title;
@@ -61,10 +61,10 @@ const lyricsCommand = {
       const trimmedLyrics = lyrics.lyrics.substring(0, 2000);
 
       const embed = new EmbedBuilder()
-        .setTitle('Lyrics')
+        .setTitle(`${song}`)
         .setDescription(`${trimmedLyrics}`);
 
-      await interaction.editReply({ embed: [embed]});
+      await interaction.editReply({ embeds: [embed]});
       
     } catch (error) {
       await interaction.editReply({
