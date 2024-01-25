@@ -1,5 +1,5 @@
 import { useQueue } from 'discord-player';
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 
 const viewQueueCommand = {
   data: new SlashCommandBuilder()
@@ -26,7 +26,30 @@ const viewQueueCommand = {
       });
     }
 
-    const queueArray = queue.tracks.toArray();
+    try {
+      const queueArray = queue.tracks.data;
+
+      let queueList = '';
+  
+      for (let i = 0; i < queueArray.length; i++) {
+        const track = queueArray[i];
+  
+        queueList += `${i + 1}. ${track.title} - ${track.author} (${track.duration})\n` 
+      }
+      
+      const embed = new EmbedBuilder()
+        .setTitle('Current Queue')
+        .setDescription(`${queueList}`);
+
+      await interaction.reply({ embeds: [embed] });
+
+    } catch (error) {
+      await interaction.reply({
+        content: 'An error has occured during execution',
+      });
+
+      console.log(error)
+    }
   },
 };
 
