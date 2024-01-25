@@ -1,5 +1,5 @@
 import { useHistory, useMainPlayer } from 'discord-player';
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 
 const previousCommand = {
   data: new SlashCommandBuilder()

@@ -1,5 +1,5 @@
 import { useQueue } from 'discord-player';
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 
 const restartCommand = {
   data: new SlashCommandBuilder()
