@@ -1,5 +1,5 @@
 import { useQueue } from 'discord-player';
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 
 const currentsongCommand = {
   data: new SlashCommandBuilder()
@@ -38,7 +38,7 @@ const currentsongCommand = {
       const embed = new EmbedBuilder()
         .setTitle(`${track.title}`)
         .setDescription(
-          `**${trackrack.title}** - ${track.author} (${track.duration}) is currently playing`
+          `**${track.title}** - ${track.author} (${track.duration}) is currently playing`
         )
 
         .setURL(track.url)
@@ -64,6 +64,8 @@ const currentsongCommand = {
       await interaction.reply({
         content: 'An error has occured during execution',
       });
+
+      console.log(error);
     }
   },
 };
