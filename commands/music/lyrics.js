@@ -15,30 +15,19 @@ const lyricsCommand = {
 
   async execute(interaction) {
     await interaction.deferReply();
-
-    const queue = useQueue(interaction.guildId);
-    // const channel = interaction.member.voice.channel;
-
-    // if (!channel) {
-    //   return await interaction.editReply({
-    //     content: 'You must be in a voice channel to use this command',
-    //     ephemeral: true,
-    //   });
-    // }
-
-    // const clientChannel = interaction.guild.members.me.voice.channel;
-
-    // if (clientChannel !== channel) {
-    //   return await interaction.editReply({
-    //     content: 'I must be in your voice channel to use this command',
-    //     ephemeral: true,
-    //   });
-    // }
+    const clientChannel = interaction.guild.members.me.voice.channel;
 
     try {
+      const queue = useQueue(interaction.guildId);
       let song = interaction.options.getString('song');
 
-      if (song === null && !queue.isPlaying()) {
+      if (song === null && !clientChannel) {
+        return await interaction.editReply({
+          content: 'No song is currently playing',
+        });
+      }
+
+      if (song === null && !queue.node.isPlaying()) {
         return await interaction.editReply({
           content: 'No song is currently playing',
         });
