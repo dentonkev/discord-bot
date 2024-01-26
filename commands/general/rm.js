@@ -123,6 +123,8 @@ const rmCommand = {
 					content: 'No confirmation receieved for 1 min',
 					components: [],
 				});
+
+				console.log(error);
 			}
 		}
 	},
