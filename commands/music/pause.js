@@ -39,8 +39,16 @@ const pauseCommand = {
     }
 
     try {
+      const track = queue.currentTrack;
       queue.node.pause();
-      await interaction.reply({ content: 'Paused' });
+
+      const embed = new EmbedBuilder()
+        .setTitle('Pausing')
+        .setDescription(`Pausing **${track.title}** - ${track.author} (${track.duration})`)
+        .setColor(0xeef9a5);
+
+      await interaction.reply({ embeds: [embed] });
+      
     } catch (error) {
       await interaction.reply({
         content: 'An error has occured during execution',

@@ -39,10 +39,16 @@ const resumeCommand = {
     }
 
     try {
+      const track = queue.currentTrack;
       queue.node.resume();
-      await interaction.reply({
-        content: 'Resumed',
-      });
+
+      const embed = new EmbedBuilder()
+        .setTitle('Resuming')
+        .setDescription(`Resuming **${track.title}** - ${track.author} (${track.duration})`)
+        .setColor(0xeef9a5);
+
+      await interaction.reply({ embeds: [embed] });
+      
     } catch (error) {
       await interaction.reply({
         content: 'An error has occured during execution',
