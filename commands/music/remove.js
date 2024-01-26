@@ -45,7 +45,6 @@ const removeCommand = {
       const track = queue.tracks.data[positionIndex];
       queue.removeTrack(positionIndex);
       
-
       const embed = new EmbedBuilder()
         .setTitle(`${track.title}`)
         .setDescription(`Removing ${track.title} - ${track.author} (${track.duration}) from the queue.`)

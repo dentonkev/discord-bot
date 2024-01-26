@@ -29,6 +29,7 @@ const leaveCommand = {
     try {
       queue.delete();
       await interaction.reply({ content: 'Leaving the voice call' });
+      
     } catch (error) {
       await interaction.reply({
         content: 'An error has occured during execution',

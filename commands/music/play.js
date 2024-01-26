@@ -91,6 +91,7 @@ const playCommand = {
       }
 
       await interaction.editReply({ embeds: [embed] });
+      
     } catch (error) {
       await interaction.editReply({
         content: 'An error has occured during execution',
