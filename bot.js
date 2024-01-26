@@ -106,15 +106,15 @@ client.on('interactionCreate', async (interaction) => {
   }
 });
 
-client.on('messageCreate', (message) => {
-  if (message.author.bot) {
-    return;
-  }
+// client.on('messageCreate', (message) => {
+//   if (message.author.bot) {
+//     return;
+//   }
 
-  if (message.content === 'test') {
-    message.reply('this actually works');
-  }
-});
+//   if (message.content === 'test') {
+//     message.reply('this actually works');
+//   }
+// });
 
 client.on('channelCreate', (channel) => {
   // 2 is voice channel
