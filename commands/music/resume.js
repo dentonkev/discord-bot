@@ -1,5 +1,5 @@
 import { useQueue } from 'discord-player';
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 
 const resumeCommand = {
   data: new SlashCommandBuilder()
@@ -53,6 +53,8 @@ const resumeCommand = {
       await interaction.reply({
         content: 'An error has occured during execution',
       });
+
+      console.log(error);
     }
   },
 };
