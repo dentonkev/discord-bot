@@ -40,7 +40,7 @@ const pauseCommand = {
 
     try {
       queue.node.pause();
-      await interaction.reply({ content: 'Song has been paused successfully' });
+      await interaction.reply({ content: 'Paused' });
     } catch (error) {
       await interaction.reply({
         content: 'An error has occured during execution',

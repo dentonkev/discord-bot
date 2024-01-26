@@ -41,7 +41,7 @@ const resumeCommand = {
     try {
       queue.node.resume();
       await interaction.reply({
-        content: 'Song has been resumed successfully',
+        content: 'Resumed',
       });
     } catch (error) {
       await interaction.reply({
