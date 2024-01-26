@@ -129,5 +129,3 @@ client.on('channelCreate', (channel) => {
 });
 
 client.login(BOT_TOKEN);
-
-// Player Event Handling
