@@ -32,6 +32,20 @@ Example: /queue a sky full of stars
 Example: /lyrics a sky full of stars
 ```
 
+`/viewqueue` command will display the current songs in the queue.
+
+```c
+/viewqueue
+```
+
+`/remove <number>` command will remove a song from the queue.
+
+```c
+/remove <num of song in queue>
+
+Example: /remove 1
+```
+
 `/skip` command will skip the song that is currently playing.
 
 ```c
@@ -73,3 +87,22 @@ Example: /lyrics a sky full of stars
 ```c
 /currentsong
 ```
+
+`/echo <input message>` command will replicate the inputted message.
+
+```c
+/echo <input message>
+
+Example: /echo Hello World!
+```
+
+`/rm kick <user>` or `/rm ban <user>` command will kick or ban the user.
+
+```c
+/rm kick <user>
+
+/rm ban <user>
+
+Example: /rm kick @Jet, /rm ban @Jet
+```
+
