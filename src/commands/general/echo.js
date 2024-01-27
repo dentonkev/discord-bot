@@ -12,13 +12,13 @@ const echoCommands = {
 				.setMaxLength(30)
 				.setMinLength(2),
 		),
-		// .addNumberOption((option) =>
-		// 	option
-		// 		.setName('number')
-		// 		.setDescription('Number that gets echoed back')
-		// 		.setMaxValue(100)
-		// 		.setMinValue(1),
-		// )
+	// .addNumberOption((option) =>
+	// 	option
+	// 		.setName('number')
+	// 		.setDescription('Number that gets echoed back')
+	// 		.setMaxValue(100)
+	// 		.setMinValue(1),
+	// )
 
 	async execute(interaction) {
 		const message = interaction.options.getString('message');
@@ -31,7 +31,7 @@ const echoCommands = {
 		// 	await interaction.reply(`${message}, ${number}`);
 		// }
 
-		await interaction.reply({ content: message});
+		await interaction.reply({ content: message });
 	},
 };
 
