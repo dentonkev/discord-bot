@@ -63,18 +63,24 @@ const playCommand = {
         });
       }
 
-      const track = songSearch.tracks[0];
+      let track = songSearch.tracks[0];
 
-      queue.node.play(track, { queue: false });
+      if (!songSearch.playlist) { 
+        queue.insertTrack(track, 0);
+      } else {
+        for (const i in songSearch.tracks) {
+          track = songSearch.playlist;
+          queue.insertTrack(songSearch.tracks[i], i);
+        }
+      }
+
+      queue.node.play();
 
       const embed = new EmbedBuilder()
-        .setTitle(`${track.title}`)
-        .setDescription(
-          `Playing ${track.title} - ${track.author} (${track.duration})`
-        )
+      .setTitle(`${track.title}`)
 
-        .setURL(track.url)
-        .setAuthor({ name: `${track.author}` });
+      .setURL(track.url)
+      .setAuthor({ name: `${songSearch.tracks[0].author}` });
 
       if (track.url.includes('spotify')) {
         embed
@@ -90,6 +96,18 @@ const playCommand = {
           );
       }
 
+      if (!songSearch.playlist) {
+        embed
+          .setDescription(
+            `Playing ${track.title} - ${track.author} (${track.duration})`
+          )
+      } else {
+        embed
+          .setDescription(
+            `Playing ${track.title} - ${songSearch.tracks[0].author} playlist`
+          )
+      }
+        
       await interaction.editReply({ embeds: [embed] });
       
     } catch (error) {
