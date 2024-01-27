@@ -78,7 +78,6 @@ const playCommand = {
 
       const embed = new EmbedBuilder()
       .setTitle(`${track.title}`)
-
       .setURL(track.url)
       .setAuthor({ name: `${songSearch.tracks[0].author}` });
 
@@ -104,7 +103,7 @@ const playCommand = {
       } else {
         embed
           .setDescription(
-            `Playing ${track.title} - ${songSearch.tracks[0].author} playlist`
+            `Playing ${track.title} - ${songSearch.tracks[0].author}`
           )
       }
         
