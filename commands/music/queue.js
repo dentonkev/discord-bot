@@ -57,10 +57,12 @@ const queueCommand = {
         },
       });
 
-      const track = res.track;
-      const queue = useQueue(interaction.guildId);
-      const size = queue.tracks.data.length;
+      let track = songSearch.tracks[0];
 
+      if (songSearch.playlist) {
+        track = songSearch.playlist;
+      }
+      
       const embed = new EmbedBuilder()
         .setTitle(`${track.title}`)
         .setDescription(
@@ -68,7 +70,7 @@ const queueCommand = {
         )
 
         .setURL(track.url)
-        .setAuthor({ name: `${track.author}` });
+        .setAuthor({ name: `${songSearch.tracks[0].author}` });
 
       if (track.url.includes('spotify')) {
         embed
@@ -82,10 +84,18 @@ const queueCommand = {
           .setThumbnail(
             'https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/YouTube_social_white_square_%282017%29.svg/33px-YouTube_social_white_square_%282017%29.svg.png'
           );
-      }
+      } 
 
-      if (size === 0) {
-        embed.setDescription(`Playing ${track.title} - ${track.author} (${track.duration})`);
+      if (!songSearch.playlist) {
+        embed
+          .setDescription(
+            `Enqueueing ${track.title} - ${track.author} (${track.duration})`
+          )
+      } else {
+        embed
+          .setDescription(
+            `Enqueueing ${track.title} - ${songSearch.tracks[0].author}`
+          )
       }
 
       await interaction.editReply({ embeds: [embed] });
