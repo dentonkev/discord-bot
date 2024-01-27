@@ -46,6 +46,12 @@ Example: /lyrics a sky full of stars
 Example: /remove 1
 ```
 
+`/clearqueue` command will clear all songs from the queue.
+
+```c
+/clearqueue
+```
+
 `/skip` command will skip the song that is currently playing.
 
 ```c
