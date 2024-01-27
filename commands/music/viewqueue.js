@@ -26,6 +26,12 @@ const viewQueueCommand = {
       });
     }
 
+    if (queue.isEmpty()) {
+      return await interaction.reply({ 
+        content: 'No tracks in the queue'
+      })
+    }
+
     try {
       const queueArray = queue.tracks.data;
 
