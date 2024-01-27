@@ -36,7 +36,7 @@ const clearQueueCommand = {
       queue.clear();
 
       const embed = new EmbedBuilder()
-        .setTitle('Clearing')
+        .setTitle('Clearing Queue')
         .setDescription(`Clearing all songs from the queue`)
         .setColor(0xeef9a5);
 
