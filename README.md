@@ -1,6 +1,6 @@
-# DJet-Bot
+# DJet Bot
 
-Discord music bot named DJet-Bot that allows users to play music in voice channels of servers. It is built by using the [discord.js](https://discord.js.org/#/) and [discord-player](https://discord-player.js.org) libraries.
+Discord music bot named DJet that allows users to play music in voice channels of servers. It is built by using the [discord.js](https://discord.js.org/#/) and [discord-player](https://discord-player.js.org) libraries.
 
 # Features
 
