@@ -10,6 +10,7 @@ import { config } from 'dotenv';
 import fs, { readdirSync } from 'node:fs';
 import path, { dirname } from 'node:path';
 import { fileURLToPath } from 'url';
+import { YoutubeiExtractor } from "discord-player-youtubei";
 
 config();
 const BOT_TOKEN = process.env.BOT_TOKEN;
@@ -72,13 +73,14 @@ slashCommands();
 // Player initialization
 const player = new Player(client, {
   useLegacyFFmpeg: false,
-  skipFFmpeg: false,
-  ytdlOptions: {
-    quality: 'highestaudio',
-    highWaterMark: 1 << 25,
-  },
+  skipFFmpeg: false
 });
-await player.extractors.loadDefault();
+
+await player.extractors.loadDefault(
+  (ext) => !["YouTubeExtractor"].includes(ext)
+);
+
+await player.extractors.register(YoutubeiExtractor, {});
 
 // Client Event Handling
 client.on('ready', () => {
